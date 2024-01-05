@@ -1,0 +1,19 @@
+query RunInput {
+  cart {
+    buyerIdentity {
+      customer {
+        id
+         metafield(namespace: "customer", key: "customer") {
+      value
+    }
+        }
+    }
+    deliveryGroups {
+      id
+      deliveryOptions {
+        handle
+        title
+      }
+    }
+  }
+}

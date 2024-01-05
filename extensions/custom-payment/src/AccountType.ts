@@ -1,0 +1,5 @@
+export enum AccountType {
+  PAYROLL = "PAYROLL",
+  ALLOTMENT = "ALLOTMENT",
+  COMPANY_ISSUE = "COMPANY_ISSUE",
+}

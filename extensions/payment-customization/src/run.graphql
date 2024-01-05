@@ -1,0 +1,16 @@
+query RunInput {
+  cart {
+    buyerIdentity {
+      customer {
+        id
+         metafield(namespace: "customer", key: "customer") {
+      value
+    }
+        }
+    }
+  }
+  paymentMethods {
+    id
+    name
+  }
+}
