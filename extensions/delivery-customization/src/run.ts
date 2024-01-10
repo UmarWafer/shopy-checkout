@@ -18,10 +18,11 @@ export function run(input: RunInput): FunctionRunResult {
   const customerMetafields : Configuration = JSON.parse(
     input?.cart.buyerIdentity?.customer?.metafield?.value?? "{}"
   );
-  console.log("customerMetafields",customerMetafields)
+  //@ts-ignore
+  console.log("customerMetafields",customerMetafields.type)
   console.log("delieryGroups",input?.cart?.deliveryGroups)
 //@ts-ignore
-  if(customerMetafields.companyIssues?.length == 0) {
+  if(customerMetafields.type == "Company Issue") {
 const fedexShipping =input?.cart?.deliveryGroups?.flatMap((group)=>group.deliveryOptions).find((option)=>option.title=="Fedex Ground")
 if(fedexShipping){
   return {
@@ -30,7 +31,9 @@ if(fedexShipping){
     ]
   }
 }
-  }else{
+  }
+  //@ts-ignore
+  if(customerMetafields.type == "Fedex Ground") {
     const companyIssues =input?.cart?.deliveryGroups?.flatMap((group)=>group.deliveryOptions).find((option)=>option.title=="Company Issue")
     if(companyIssues){
       return {

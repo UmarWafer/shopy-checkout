@@ -6,6 +6,7 @@ import {
   reactExtension,
   Spinner,
   View,
+  useAppMetafields,
   useBuyerJourneyIntercept,
   useShippingAddress,
   useCustomer,
@@ -18,27 +19,29 @@ import {
 } from '@shopify/ui-extensions-react/checkout';
 import { getDiscountCode, getShopyCheckout, pullCheckout, refreshCheckout, updateAddress, updateShipping } from './actions'
 export default reactExtension(
-  'purchase.checkout.payment-method-list.render-before',
+  'purchase.checkout.shipping-option-list.render-before',
   () => <Extension />,
 );
 
 function Extension() {
-  const [ready, setReady] = useState<boolean>(true);
+  const [ready, setReady] = useState<boolean>(false);
   const [render, setRender] = useState<boolean>(false);
   const shippingAdress = useShippingAddress();
-  const tax = useTotalTaxAmount()
+  //const tax = useTotalTaxAmount()
+//   const app = useAppMetafields()
+//  console.log("app",app)
   const customer = useCustomer();
   const customerId = customer.id.replace("gid://shopify/Customer/", "");
-  const provinece = shippingAdress.provinceCode
+  //const provinece = shippingAdress.provinceCode
   const api = useApi();
   const applyDiscountCodeChange = useApplyDiscountCodeChange()
   const shippingAddress = useShippingAddress();
-  console.log("api.shippingAddress?.current", api.shippingAddress?.current)
-  console.log("shippingAddress", shippingAddress)
+ // console.log("api.shippingAddress?.current", api.shippingAddress?.current)
+  //console.log("shippingAddress", shippingAddress)
   const checkoutToken = api.checkoutToken.current;
   // const token ="0bf23b433a34d4990777624e0fa413b7"
   const token = checkoutToken;
-  console.log("checkoutToken", checkoutToken)
+  //console.log("checkoutToken", checkoutToken)
 
   const calculate = async () => {
     
@@ -50,13 +53,13 @@ function Extension() {
     if (status == 'ready') {
       console.log("ready")
       
-      console.log("tax", tax.amount)
+      //console.log("tax", tax.amount)
       const shopyCheckout = await getShopyCheckout(token,customerId)
-      console.log("shopyCheckout", shopyCheckout)
+      //console.log("shopyCheckout", shopyCheckout)
       const shopyCheckoutData = JSON.parse(shopyCheckout as string)
       const discountdata = await getDiscountCode(shopyCheckoutData.data[0].discountId,customerId)
       const discountData = JSON.parse(discountdata as string)
-      console.log("discountdata", discountdata)
+      //console.log("discountdata", discountdata)
       const result = await applyDiscountCodeChange({
       type:"addDiscountCode",
       code:discountData.data.code

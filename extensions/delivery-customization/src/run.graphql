@@ -3,7 +3,7 @@ query RunInput {
     buyerIdentity {
       customer {
         id
-         metafield(namespace: "customer", key: "customer") {
+        metafield(namespace: "checkout", key: "shipping") {
       value
     }
         }

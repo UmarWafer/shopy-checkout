@@ -19551,11 +19551,6 @@ ${errorInfo.componentStack}`);
     return useSubscription(shippingAddress);
   }
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/cost.mjs
-  function useTotalTaxAmount() {
-    return useSubscription(useApi().cost.totalTaxAmount);
-  }
-
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-identity.mjs
   function useCustomer() {
     const buyerIdentity = useApi().buyerIdentity;
@@ -19579,12 +19574,10 @@ ${errorInfo.componentStack}`);
   var refreshCheckout = (token, CustomerId) => __async(void 0, null, function* () {
     const url = `${host}/checkouts/${token}/refresh`;
     const data = JSON.stringify({ "step": "payment_method" });
-    console.log("data", data);
     return fetch(`${url}`, { method: "POST", headers: {
       "Content-Type": "application/json",
       "X-Customer-Id": `${CustomerId}`
     }, body: data }).then((response) => response.text()).then((result) => {
-      console.log(result);
       return true;
     }).catch((error) => {
       console.log("error", error);
@@ -19594,12 +19587,10 @@ ${errorInfo.componentStack}`);
   var updateAddress = (token, CustomerId, address) => __async(void 0, null, function* () {
     const url = `${host}/checkouts_v2/${token}/update_address_in_shopify`;
     const data = JSON.stringify(address);
-    console.log("data", data);
     return fetch(`${url}`, { method: "POST", headers: {
       "Content-Type": "application/json",
       "X-Customer-Id": `${CustomerId}`
     }, body: data }).then((response) => response.text()).then((result) => {
-      console.log(result);
       return true;
     }).catch((error) => {
       console.log("error", error);
@@ -19609,12 +19600,10 @@ ${errorInfo.componentStack}`);
   var updateShipping = (token, CustomerId) => __async(void 0, null, function* () {
     const url = `${host}/checkouts_v2/${token}/update_shipping_line_in_shopify`;
     const data = JSON.stringify({});
-    console.log("data", data);
     return fetch(`${url}`, { method: "POST", headers: {
       "Content-Type": "application/json",
       "X-Customer-Id": `${CustomerId}`
     }, body: data }).then((response) => response.text()).then((result) => {
-      console.log(result);
       return true;
     }).catch((error) => {
       console.log("error", error);
@@ -19624,12 +19613,10 @@ ${errorInfo.componentStack}`);
   var getShopyCheckout = (token, CustomerId) => __async(void 0, null, function* () {
     const url = `${host}/checkouts_v2/${token}/getcheckout`;
     const data = JSON.stringify({});
-    console.log("data", data);
     return fetch(`${url}`, { method: "POST", headers: {
       "Content-Type": "application/json",
       "X-Customer-Id": `${CustomerId}`
     }, body: data }).then((response) => response.text()).then((result) => {
-      console.log(result);
       return result;
     }).catch((error) => {
       console.log("error", error);
@@ -19639,12 +19626,10 @@ ${errorInfo.componentStack}`);
   var getDiscountCode = (id, CustomerId) => __async(void 0, null, function* () {
     const url = `${host}/checkouts_v2/get_discount_code/${id}`;
     const data = JSON.stringify({});
-    console.log("data", data);
     return fetch(`${url}`, { method: "POST", headers: {
       "Content-Type": "application/json",
       "X-Customer-Id": `${CustomerId}`
     }, body: data }).then((response) => response.text()).then((result) => {
-      console.log(result);
       return result;
     }).catch((error) => {
       console.log("error", error);
@@ -19665,11 +19650,8 @@ ${errorInfo.componentStack}`);
           });
           const result = yield response.text();
           const parsedResult = JSON.parse(result);
-          console.log("parsedResult: ", parsedResult);
           const readyState = parsedResult.data[0].readyState;
-          console.log(readyState);
           if (readyState === "enqueued" || readyState === "processing") {
-            console.log(readyState);
           } else if (readyState === "ready") {
             clearInterval(pollCheckoutInterval);
             resolve("ready");
@@ -19686,26 +19668,20 @@ ${errorInfo.componentStack}`);
   // extensions/shopy-calculation/src/Checkout.tsx
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
   var Checkout_default = reactExtension(
-    "purchase.checkout.payment-method-list.render-before",
+    "purchase.checkout.shipping-option-list.render-before",
     () => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Extension, {})
   );
   function Extension() {
-    var _a;
-    const [ready, setReady] = (0, import_react14.useState)(true);
+    const [ready, setReady] = (0, import_react14.useState)(false);
     const [render3, setRender] = (0, import_react14.useState)(false);
     const shippingAdress = useShippingAddress();
-    const tax = useTotalTaxAmount();
     const customer = useCustomer();
     const customerId = customer.id.replace("gid://shopify/Customer/", "");
-    const provinece = shippingAdress.provinceCode;
     const api = useApi();
     const applyDiscountCodeChange = useApplyDiscountCodeChange();
     const shippingAddress = useShippingAddress();
-    console.log("api.shippingAddress?.current", (_a = api.shippingAddress) == null ? void 0 : _a.current);
-    console.log("shippingAddress", shippingAddress);
     const checkoutToken = api.checkoutToken.current;
     const token = checkoutToken;
-    console.log("checkoutToken", checkoutToken);
     const calculate = () => __async(this, null, function* () {
       console.log("customerId", customerId);
       yield updateAddress(token, customerId, shippingAddress);
@@ -19714,13 +19690,10 @@ ${errorInfo.componentStack}`);
       const status = yield pullCheckout(token, customerId);
       if (status == "ready") {
         console.log("ready");
-        console.log("tax", tax.amount);
         const shopyCheckout = yield getShopyCheckout(token, customerId);
-        console.log("shopyCheckout", shopyCheckout);
         const shopyCheckoutData = JSON.parse(shopyCheckout);
         const discountdata = yield getDiscountCode(shopyCheckoutData.data[0].discountId, customerId);
         const discountData = JSON.parse(discountdata);
-        console.log("discountdata", discountdata);
         const result = yield applyDiscountCodeChange({
           type: "addDiscountCode",
           code: discountData.data.code
