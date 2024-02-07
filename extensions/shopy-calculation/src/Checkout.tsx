@@ -16,8 +16,10 @@ import {
   useApplyDiscountCodeChange,
   useDeliveryGroup,
   useDeliveryGroups,
+  useApplyCartLinesChange,
 } from '@shopify/ui-extensions-react/checkout';
 import { getDiscountCode, getShopyCheckout, pullCheckout, refreshCheckout, updateAddress, updateShipping } from './actions'
+import { array } from 'yup';
 export default reactExtension(
   'purchase.checkout.shipping-option-list.render-before',
   () => <Extension />,
@@ -30,6 +32,7 @@ function Extension() {
   //const tax = useTotalTaxAmount()
 //   const app = useAppMetafields()
 //  console.log("app",app)
+const updateAttributes = useApplyCartLinesChange()
   const customer = useCustomer();
   const customerId = customer.id.replace("gid://shopify/Customer/", "");
   //const provinece = shippingAdress.provinceCode
@@ -64,11 +67,135 @@ function Extension() {
       type:"addDiscountCode",
       code:discountData.data.code
     })
-    setReady(true)
+    setTimeout(async() =>{await updateCartLine(shopyCheckoutData.attributes)},1000)
+    
   }
 
   }
+  const cartLines =  useCartLines()
 
+  const updateCartLine= async(data)=>{
+    console.log("cartLines",cartLines)
+    const transformedArray = cartLines.map(item => ({
+      id: item.id,
+      merchandiseId: item.merchandise.id,
+      attributes: []
+    }));
+
+    console.log("transformedArray",{transformedArray})
+    const updatedArry=updateExistingAttributes(transformedArray,data)
+    console.log("updatedArry",{updatedArry})
+//     updatedArry.forEach(async (item)=>{
+//       setTimeout(async() =>{
+// console.log("item",{item})
+//     const updated=  await updateAttributes({
+//         type:"updateCartLine",
+//         id:item.id,
+//         merchandiseId:item.merchandiseId,
+//         attributes:item.attributes
+//       })
+//       console.log(updated)
+//     })
+//   },1000)
+await updateItemsWithRetry(updatedArry)
+    console.log("update")
+    
+  }
+  
+  const  updateExistingAttributes=(originalArray, additionalAttributes) =>{
+    additionalAttributes.forEach((additional) => {
+      const existingEntry = originalArray.find(
+        (entry) => entry.merchandiseId === additional.merchandiseId
+      );
+  
+      if (existingEntry) {
+        // Update existing entry with matching merchandiseId
+        existingEntry.attributes = additional.attributes;
+      }
+    });
+    return originalArray;
+  }
+
+
+
+   const retryUpdate = async (
+    item:any,
+    attempt?: number,
+  )=>{
+    const currentAttempt = attempt || 1;
+    const updated = await updateAttributes({
+      type: "updateCartLine",
+      id: item.id,
+      merchandiseId: item.merchandiseId,
+      attributes: item.attributes,
+    },);
+    // @ts-ignore
+ 
+    // console.log({ready});
+    if (updated.type=='success') {
+      console.log("success")
+    return updated.type
+    } else if (currentAttempt > 100) {
+      console.log("trried more than 100 attempts")
+    } else {
+     
+      return new Promise((resolve, reject) => {
+        setTimeout(
+          () =>
+          retryUpdate(item, currentAttempt + 1)
+              .then(resolve)
+              .catch(reject),
+          500
+        );
+      });
+    }
+  };
+
+
+
+
+ 
+  
+  async function updateItemsWithRetry(updatedArray) {
+    const length = updatedArray.length;
+    let done =0
+    for (const item of updatedArray) {
+      let lastUpdateSuccessful = false;
+  
+      while (!lastUpdateSuccessful) {
+        const result = await retryUpdate(item,updatedArray);
+  
+        if (result === 'success') {
+          // The update was successful, you can proceed with the next item
+          lastUpdateSuccessful = true;
+          done++
+          if(done==length){
+            setReady(true);
+          }
+        } else {
+          // The update failed after retries, handle it as needed
+        }
+      }
+    }
+  }
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+  
   useEffect(() => {
     // if(customerId&&provinece&&tax.amount){
     //   console.log("customerId&&provinece)",provinece)
@@ -94,7 +221,7 @@ function Extension() {
             {
               // An error without a `target` property is shown at page level
               message:
-                'Please wait, we are calculating your shipping and taxes.',
+                'Please wait, we are calculating your shipping and taxes. Do not click payment if you saw loader otherwise click payment',
             },
           ],
         }

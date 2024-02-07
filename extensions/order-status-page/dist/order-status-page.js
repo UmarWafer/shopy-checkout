@@ -19471,9 +19471,9 @@ ${errorInfo.componentStack}`);
     const translate = useTranslate();
     const api = useApi();
     const checkoutToken = api.checkoutToken.current;
+    const token = checkoutToken;
     const customer = useCustomer();
-    const token = "ee329709ae917dcf2b61f51ffc3f7acf";
-    const customerId = 6160215343301;
+    const customerId = customer.id.replace("gid://shopify/Customer/", "");
     const getvalues = () => __async(this, null, function* () {
       const getorder = yield getOrder(token, customerId);
       const getOrderData = JSON.parse(getorder);
@@ -19485,4 +19485,3 @@ ${errorInfo.componentStack}`);
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_jsx_runtime3.Fragment, {});
   }
 })();
-//# sourceMappingURL=order-status-page.js.map

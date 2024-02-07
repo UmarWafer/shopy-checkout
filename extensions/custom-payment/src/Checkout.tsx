@@ -366,10 +366,35 @@ if(status=='ready'){
       <View > 
         {!completed?
         <Button kind='primary' loading={applyPaymentLoader} onPress={()=>{
-        applyShopyPayment()
+          if(payroll<payrollMinimum){
+            setTimeout(()=>{
+              api.ui.overlay.close('payroll_minimum')
+            },3000)
+            
+          }else{
+            applyShopyPayment()
+          }
+       
       }}
       overlay={
+        payroll<payrollMinimum?
         <Modal
+          id="payroll_minimum"
+          padding
+          title="Try Another Payment Methods"
+        >
+          <View  accessibilityRole='alert' inlineAlignment='center' padding="loose"> 
+          <Text>Payroll amount lower then Payroll minimum transaction amount. complete payment with other payment methods</Text>
+          
+          </View>
+          {/* <Button
+            onPress={() =>
+              api.ui.overlay.close('my-modal')
+            }
+          >
+            Close
+          </Button> */}
+        </Modal>:<Modal
           id="apply-payment"
           padding
           title="APPLYING M&H PAYMENTS. DO NOT REFRESH YOUR SCREEN AND CLOSE THIS."

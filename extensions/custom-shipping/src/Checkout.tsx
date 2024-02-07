@@ -31,7 +31,7 @@ function Extension() {
  const customer = useCustomer();
 //  const app = useAppMetafields()
 //  console.log("app",app)
-
+window.location.pathname
 //  const delivery =  useDeliveryGroups();
 //  console.log("delivery",delivery)
  

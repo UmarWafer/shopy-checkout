@@ -19870,13 +19870,13 @@ ${errorInfo.componentStack}`);
       console.log("dueToShow", dueToShow);
       setShopyDue(dueToShow);
       if (companyIssue) {
+        yield useLocalStorage.write("cost", cost);
+        yield useLocalStorage.write("companyIssue", "companyIssue");
         yield createPaymentDetails(token, cost, 0, 0, true);
-        useLocalStorage.write("cost", cost);
-        useLocalStorage.write("companyIssue", "companyIssue");
       } else {
-        useLocalStorage.write("cost", cost);
-        useLocalStorage.write("allotment", allotment);
-        useLocalStorage.write("payroll", payroll);
+        yield useLocalStorage.write("cost", cost);
+        yield useLocalStorage.write("allotment", allotment);
+        yield useLocalStorage.write("payroll", payroll);
         yield createPaymentDetails(token, cost, allotment, payroll, false);
       }
       const status = yield pullCheckout(token, customerId);
@@ -20020,9 +20020,23 @@ ${errorInfo.componentStack}`);
                 kind: "primary",
                 loading: applyPaymentLoader,
                 onPress: () => {
-                  applyShopyPayment();
+                  if (payroll < payrollMinimum) {
+                    setTimeout(() => {
+                      api.ui.overlay.close("payroll_minimum");
+                    }, 3e3);
+                  } else {
+                    applyShopyPayment();
+                  }
                 },
-                overlay: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                overlay: payroll < payrollMinimum ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                  Modal2,
+                  {
+                    id: "payroll_minimum",
+                    padding: true,
+                    title: "Try Another Payment Methods",
+                    children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { accessibilityRole: "alert", inlineAlignment: "center", padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: "Payroll amount lower then Payroll minimum transaction amount. complete payment with other payment methods" }) })
+                  }
+                ) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
                   Modal2,
                   {
                     id: "apply-payment",
@@ -20064,7 +20078,7 @@ ${errorInfo.componentStack}`);
           ]
         }
       ) }) }) }) : "",
-      completed && shopyDue > 0 ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: `Pay Balance ${shopyDue / 100} with other payment method` }) : ""
+      completed && shopyDue > 0 ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "extraLarge", children: `Pay Balance ${(shopyDue / 100).toFixed(2)} with other payment method` }) : ""
     ] });
   }
 })();
