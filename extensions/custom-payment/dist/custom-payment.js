@@ -627,7 +627,7 @@
             var newElement = ReactElement(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
             return newElement;
           }
-          function cloneElement2(element, config, children) {
+          function cloneElement(element, config, children) {
             if (element === null || element === void 0) {
               throw new Error("React.cloneElement(...): The argument must be a React element, but you passed " + element + ".");
             }
@@ -675,7 +675,7 @@
             }
             return ReactElement(element.type, key, ref, self, source, owner, props);
           }
-          function isValidElement3(object) {
+          function isValidElement2(object) {
             return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
           }
           var SEPARATOR = ".";
@@ -740,7 +740,7 @@
                   return c;
                 });
               } else if (mappedChild != null) {
-                if (isValidElement3(mappedChild)) {
+                if (isValidElement2(mappedChild)) {
                   {
                     if (mappedChild.key && (!_child || _child.key !== mappedChild.key)) {
                       checkKeyStringCoercion(mappedChild.key);
@@ -828,7 +828,7 @@
             }) || [];
           }
           function onlyChild(children) {
-            if (!isValidElement3(children)) {
+            if (!isValidElement2(children)) {
               throw new Error("React.Children.only expected to receive a single React element child.");
             }
             return children;
@@ -1141,11 +1141,11 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useReducer(reducer, initialArg, init);
           }
-          function useRef2(initialValue) {
+          function useRef3(initialValue) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect3(create, deps) {
+          function useEffect4(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1157,11 +1157,11 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useLayoutEffect(create, deps);
           }
-          function useCallback2(callback, deps) {
+          function useCallback(callback, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useCallback(callback, deps);
           }
-          function useMemo4(create, deps) {
+          function useMemo3(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useMemo(create, deps);
           }
@@ -1559,11 +1559,11 @@
             if (isArray(node)) {
               for (var i = 0; i < node.length; i++) {
                 var child = node[i];
-                if (isValidElement3(child)) {
+                if (isValidElement2(child)) {
                   validateExplicitKey(child, parentType);
                 }
               }
-            } else if (isValidElement3(node)) {
+            } else if (isValidElement2(node)) {
               if (node._store) {
                 node._store.validated = true;
               }
@@ -1574,7 +1574,7 @@
                   var iterator = iteratorFn.call(node);
                   var step;
                   while (!(step = iterator.next()).done) {
-                    if (isValidElement3(step.value)) {
+                    if (isValidElement2(step.value)) {
                       validateExplicitKey(step.value, parentType);
                     }
                   }
@@ -1697,7 +1697,7 @@
             return validatedFactory;
           }
           function cloneElementWithValidation(element, props, children) {
-            var newElement = cloneElement2.apply(this, arguments);
+            var newElement = cloneElement.apply(this, arguments);
             for (var i = 2; i < arguments.length; i++) {
               validateChildKeys(arguments[i], newElement.type);
             }
@@ -1918,23 +1918,23 @@
           exports.createFactory = createFactory;
           exports.createRef = createRef;
           exports.forwardRef = forwardRef;
-          exports.isValidElement = isValidElement3;
+          exports.isValidElement = isValidElement2;
           exports.lazy = lazy;
           exports.memo = memo2;
           exports.startTransition = startTransition;
           exports.unstable_act = act;
-          exports.useCallback = useCallback2;
+          exports.useCallback = useCallback;
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect3;
+          exports.useEffect = useEffect4;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
           exports.useLayoutEffect = useLayoutEffect;
-          exports.useMemo = useMemo4;
+          exports.useMemo = useMemo3;
           exports.useReducer = useReducer;
-          exports.useRef = useRef2;
+          exports.useRef = useRef3;
           exports.useState = useState3;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
@@ -18194,7 +18194,7 @@
           {
             propTypesMisspellWarningShown = false;
           }
-          function isValidElement3(object) {
+          function isValidElement2(object) {
             {
               return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
             }
@@ -18261,11 +18261,11 @@
               if (isArray(node)) {
                 for (var i = 0; i < node.length; i++) {
                   var child = node[i];
-                  if (isValidElement3(child)) {
+                  if (isValidElement2(child)) {
                     validateExplicitKey(child, parentType);
                   }
                 }
-              } else if (isValidElement3(node)) {
+              } else if (isValidElement2(node)) {
                 if (node._store) {
                   node._store.validated = true;
                 }
@@ -18276,7 +18276,7 @@
                     var iterator = iteratorFn.call(node);
                     var step;
                     while (!(step = iterator.next()).done) {
-                      if (isValidElement3(step.value)) {
+                      if (isValidElement2(step.value)) {
                         validateExplicitKey(step.value, parentType);
                       }
                     }
@@ -19124,6 +19124,9 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/extension.mjs
   var extension = createExtensionRegistrationFunction();
 
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Banner/Banner.mjs
+  var Banner = createRemoteComponent("Banner");
+
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/BlockStack/BlockStack.mjs
   var BlockStack = createRemoteComponent("BlockStack");
 
@@ -19479,6 +19482,9 @@ ${errorInfo.componentStack}`);
     }
   };
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Banner/Banner.mjs
+  var Banner2 = createRemoteReactComponent(Banner);
+
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/BlockStack/BlockStack.mjs
   var BlockStack2 = createRemoteReactComponent(BlockStack);
 
@@ -19509,13 +19515,19 @@ ${errorInfo.componentStack}`);
   var View2 = createRemoteReactComponent(View);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
-  var import_react17 = __toESM(require_react(), 1);
+  var import_react18 = __toESM(require_react(), 1);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/errors.mjs
   var CheckoutUIExtensionError = class extends Error {
     constructor(...args) {
       super(...args);
       this.name = "CheckoutUIExtensionError";
+    }
+  };
+  var ScopeNotGrantedError = class extends Error {
+    constructor(...args) {
+      super(...args);
+      this.name = "ScopeNotGrantedError";
     }
   };
   var ExtensionHasNoMethodError = class extends Error {
@@ -19527,7 +19539,7 @@ ${errorInfo.componentStack}`);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
   function useApi(_target) {
-    const api = (0, import_react17.useContext)(ExtensionApiContext);
+    const api = (0, import_react18.useContext)(ExtensionApiContext);
     if (api == null) {
       throw new CheckoutUIExtensionError("You can only call this hook when running as a UI extension.");
     }
@@ -19535,10 +19547,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/subscription.mjs
-  var import_react18 = __toESM(require_react(), 1);
+  var import_react19 = __toESM(require_react(), 1);
   function useSubscription(subscription) {
-    const [, setValue] = (0, import_react18.useState)(subscription.current);
-    (0, import_react18.useEffect)(() => {
+    const [, setValue] = (0, import_react19.useState)(subscription.current);
+    (0, import_react19.useEffect)(() => {
       let didUnsubscribe = false;
       const checkForUpdates = (newValue) => {
         if (didUnsubscribe) {
@@ -19556,27 +19568,22 @@ ${errorInfo.componentStack}`);
     return subscription.current;
   }
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/app-metafields.mjs
-  var import_react19 = __toESM(require_react(), 1);
-  function useAppMetafields(filters = {}) {
-    const appMetafields = useSubscription(useApi().appMetafields);
-    return (0, import_react19.useMemo)(() => {
-      if (filters.key && !filters.namespace) {
-        throw new CheckoutUIExtensionError("You must pass in a namespace with a key");
-      }
-      const filterKeys = Object.keys(filters);
-      if (filterKeys.length) {
-        return appMetafields.filter((app) => {
-          return filterKeys.every((key) => {
-            if (key === "id" || key === "type") {
-              return app.target[key] === filters[key];
-            }
-            return app.metafield[key] === filters[key];
-          });
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-journey.mjs
+  var import_react20 = __toESM(require_react(), 1);
+  function useBuyerJourneyIntercept(interceptor) {
+    const api = useApi();
+    if (!("buyerJourney" in api)) {
+      throw new ExtensionHasNoMethodError("buyerJourney", api.extension.target);
+    }
+    const interceptorRef = (0, import_react20.useRef)(interceptor);
+    interceptorRef.current = interceptor;
+    return (0, import_react20.useEffect)(() => {
+      const teardownPromise = api.buyerJourney.intercept((interceptorProps) => interceptorRef.current(interceptorProps));
+      return () => {
+        teardownPromise.then((teardown) => teardown()).catch(() => {
         });
-      }
-      return appMetafields;
-    }, [filters, appMetafields]);
+      };
+    }, [api.buyerJourney]);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/storage.mjs
@@ -19584,27 +19591,13 @@ ${errorInfo.componentStack}`);
     return useApi().storage;
   }
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/translate.mjs
-  var import_react20 = __toESM(require_react(), 1);
-  function useTranslate() {
-    const {
-      i18n
-    } = useApi();
-    const translate = (0, import_react20.useCallback)((...args) => {
-      const translation = i18n.translate(...args);
-      if (!Array.isArray(translation)) {
-        return translation;
-      }
-      return translation.map((part, index) => {
-        if (/* @__PURE__ */ (0, import_react20.isValidElement)(part)) {
-          return /* @__PURE__ */ (0, import_react20.cloneElement)(part, {
-            key: index
-          });
-        }
-        return part;
-      });
-    }, [i18n]);
-    return translate;
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-identity.mjs
+  function useCustomer() {
+    const buyerIdentity = useApi().buyerIdentity;
+    if (!buyerIdentity) {
+      throw new ScopeNotGrantedError("Using buyer identity requires having personal customer data permissions granted to your app.");
+    }
+    return useSubscription(buyerIdentity.customer);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/payment-options.mjs
@@ -19631,9 +19624,18 @@ ${errorInfo.componentStack}`);
     }, [availablePaymentOptions, selectedPaymentOptions]);
   }
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/discounts.mjs
+  function useApplyDiscountCodeChange() {
+    const api = useApi();
+    if ("applyDiscountCodeChange" in api) {
+      return api.applyDiscountCodeChange;
+    }
+    throw new ExtensionHasNoMethodError("applyDiscountCodeChange", api.extension.target);
+  }
+
   // extensions/custom-payment/src/actions.ts
   var host = "https://shopy-api.wafer.ee/sf/v2";
-  var createPaymentDetails = (token, totalDue, allotment, payroll, companyIssue = false) => __async(void 0, null, function* () {
+  var createPaymentDetails = (token, totalDue, allotment, payroll, companyIssue) => __async(void 0, null, function* () {
     const remaining = companyIssue ? 0 : Math.round(totalDue - allotment - payroll);
     const paymentDetails = [];
     if (allotment) {
@@ -19679,7 +19681,33 @@ ${errorInfo.componentStack}`);
       "Content-Type": "application/json"
     } }).then((response) => response.text()).then((result) => console.log(result)).catch((error) => console.log("error", error));
   });
-  var pullCheckout = (token) => __async(void 0, null, function* () {
+  var getShopyCheckout = (token, CustomerId) => __async(void 0, null, function* () {
+    const url = `${host}/checkouts_v2/${token}/getcheckout`;
+    const data = JSON.stringify({});
+    return fetch(`${url}`, { method: "POST", headers: {
+      "Content-Type": "application/json",
+      "X-Customer-Id": `${CustomerId}`
+    }, body: data }).then((response) => response.text()).then((result) => {
+      return result;
+    }).catch((error) => {
+      console.log("error", error);
+      return false;
+    });
+  });
+  var getDiscountCode = (id, CustomerId) => __async(void 0, null, function* () {
+    const url = `${host}/checkouts_v2/get_discount_code/${id}`;
+    const data = JSON.stringify({});
+    return fetch(`${url}`, { method: "POST", headers: {
+      "Content-Type": "application/json",
+      "X-Customer-Id": `${CustomerId}`
+    }, body: data }).then((response) => response.text()).then((result) => {
+      return result;
+    }).catch((error) => {
+      console.log("error", error);
+      return false;
+    });
+  });
+  var pullCheckout = (token, CustomerId) => __async(void 0, null, function* () {
     const url = `${host}/checkouts_v2/${token}/poll`;
     return new Promise((resolve, reject) => __async(void 0, null, function* () {
       const pollCheckoutInterval = setInterval(() => __async(void 0, null, function* () {
@@ -19687,13 +19715,13 @@ ${errorInfo.componentStack}`);
           const response = yield fetch(url, {
             method: "GET",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+              "X-Customer-Id": `${CustomerId}`
             }
           });
           const result = yield response.text();
           const parsedResult = JSON.parse(result);
           const readyState = parsedResult.data[0].readyState;
-          console.log(readyState);
           if (readyState === "enqueued" || readyState === "processing") {
           } else if (readyState === "ready") {
             clearInterval(pollCheckoutInterval);
@@ -19704,8 +19732,38 @@ ${errorInfo.componentStack}`);
           clearInterval(pollCheckoutInterval);
           reject(error);
         }
-      }), 1e3);
+      }), 5e3);
     }));
+  });
+  var getData = (data) => __async(void 0, null, function* () {
+    const parsedResult = yield JSON.parse(data);
+    return parsedResult.data[0];
+  });
+  var getCustomerDetails = (email, CustomerId) => __async(void 0, null, function* () {
+    const url = `${host}/checkouts_v2/customer_details/by_email`;
+    const data = JSON.stringify({ email });
+    return fetch(`${url}`, { method: "POST", headers: {
+      "Content-Type": "application/json",
+      "X-Customer-Id": `${CustomerId}`
+    }, body: data }).then((response) => response.text()).then((result) => {
+      return result;
+    }).catch((error) => {
+      console.log("error", error);
+      return false;
+    });
+  });
+  var getCompanyIssue = (token, CustomerId) => __async(void 0, null, function* () {
+    const url = `${host}/checkouts_v2/${token}/payment_options`;
+    const data = JSON.stringify({});
+    return fetch(`${url}`, { method: "POST", headers: {
+      "Content-Type": "application/json",
+      "X-Customer-Id": `${CustomerId}`
+    }, body: data }).then((response) => response.text()).then((result) => {
+      return result;
+    }).catch((error) => {
+      console.log("error", error);
+      return false;
+    });
   });
 
   // extensions/custom-payment/src/utlis.ts
@@ -19722,207 +19780,305 @@ ${errorInfo.componentStack}`);
   );
   function Extension() {
     var _a;
-    const translate = useTranslate();
     const api = useApi();
-    console.log("api", api);
+    const selectedPaymentMethod = useSelectedPaymentOptions();
+    const selectedPaymentType = (_a = selectedPaymentMethod[0]) == null ? void 0 : _a.type.toString();
+    const applyDiscountCodeChange = useApplyDiscountCodeChange();
     const useLocalStorage = useStorage();
     const checkoutToken = api.checkoutToken.current;
     const token = checkoutToken;
-    console.log("checkoutToken", checkoutToken);
-    const cost = api.cost.totalAmount.current.amount;
-    console.log("cost", cost);
-    console.log("checkoutToken", checkoutToken);
+    const Cost = api.cost.totalAmount.current.amount;
+    const customer = useCustomer();
+    const customerId = customer.id.replace("gid://shopify/Customer/", "");
+    const customerEmail = customer.email;
     const [payrollBalance, setPayrollBalance] = (0, import_react22.useState)(null);
     const [allotmentBalance, setAllotmentBalance] = (0, import_react22.useState)(null);
-    const [payrollMinimum, setpayrollMinimum] = (0, import_react22.useState)(null);
+    const [payrollMinimum, setPayrollMinimum] = (0, import_react22.useState)(null);
     const [payroll, setPayroll] = (0, import_react22.useState)(0);
     const [allotment, setAllotment] = (0, import_react22.useState)(0);
     const [companyIssue, setCompantIssue] = (0, import_react22.useState)(false);
-    const [totalcost, setTotalcost] = (0, import_react22.useState)(0);
     const [balanceCost, setBalanceCost] = (0, import_react22.useState)(0);
+    const [balanceCostAfterAllotment, setBalanceCostAfterAllotment] = (0, import_react22.useState)(0);
+    const [completed, setCompleted] = (0, import_react22.useState)(false);
+    const [shopyDue, setShopyDue] = (0, import_react22.useState)(false);
+    const [shopyDiff, setShopyDiff] = (0, import_react22.useState)(false);
+    const [companyIssueProcess, setCompantIssueProcess] = (0, import_react22.useState)(false);
+    const updateValues = () => __async(this, null, function* () {
+      console.log("updateValues");
+      const shopyCheckout = yield getShopyCheckout(token, customerId);
+      const shopyCheckoutData = JSON.parse(shopyCheckout);
+      console.log("shopyCheckoutData", shopyCheckoutData);
+      const cost = shopyCheckoutData.data[0].total;
+      console.log("cost of extensibility", Cost);
+      console.log("due from shopy", shopyCheckoutData.data[0].totalDue);
+      const diff = shopyCheckoutData.data[0].total - Cost * 100;
+      console.log("diff", shopyDue);
+      setShopyDiff(diff);
+      const dueToShow = shopyCheckoutData.data[0].totalDue - diff;
+      console.log("dueToShow", dueToShow);
+      setShopyDue(dueToShow);
+      setBalanceCost(cost);
+      let balanceAmount = cost;
+      console.log("balanceAmount", balanceAmount);
+      console.log("updateValues");
+      const getCustomer = yield getCustomerDetails(customerEmail, customerId);
+      const customerData = yield getData(getCustomer);
+      const companyIssue2 = yield getCompanyIssue(token, customerId);
+      const isCompanyIssuedData = JSON.parse(companyIssue2);
+      console.log("getCustomer", getCustomer);
+      console.log("customerData", customerData);
+      console.log("companyIssue", companyIssue2);
+      console.log("isCompanyIssuedData", isCompanyIssuedData);
+      setAllotmentBalance(customerData.allotmentBalance);
+      setPayrollBalance(customerData.payrollBalance);
+      setPayrollMinimum(customerData.minimumPayrollTransactionAmount);
+      if (customerData.allotmentBalance > 0) {
+        let balance = 0;
+        balance = balanceAmount - customerData.allotmentBalance;
+        console.log("balance", balance);
+        if (balance > 0) {
+          console.log("balance>0", balance);
+          setAllotment(balanceAmount - balance);
+          balanceAmount = balanceAmount - customerData.allotmentBalance;
+          setBalanceCost(balanceAmount);
+          setBalanceCostAfterAllotment(balanceAmount);
+        }
+        if (balance < 0) {
+          console.log("balance<0", balance);
+          setAllotment(balanceAmount);
+          balanceAmount = 0;
+          setBalanceCost(balanceAmount);
+          setBalanceCostAfterAllotment(balanceAmount);
+        }
+      }
+      if (isCompanyIssuedData.data.companyIssues == true) {
+        setCompantIssue(true);
+      }
+    });
     const [applyed, setapplyed] = (0, import_react22.useState)(false);
     const [applyPaymentLoader, setApplyPaymentLoader] = (0, import_react22.useState)(false);
     const [clearPaymentLoader, setclearPaymentLoader] = (0, import_react22.useState)(false);
-    const cutomerMetaFields = useAppMetafields();
-    const selectedPaymentMethod = useSelectedPaymentOptions();
-    console.log("selectedPaymentMethod", selectedPaymentMethod);
-    const selectedPaymentType = (_a = selectedPaymentMethod[0]) == null ? void 0 : _a.type.toString();
-    let localPayRollBalance = 0;
-    let localallotmentBalance = 0;
-    let localpayrollMinimum = 0;
-    setTimeout(() => {
-      var _a2, _b, _c;
-      const cutomerMetaFieldValue = (_b = (_a2 = cutomerMetaFields[0]) == null ? void 0 : _a2.metafield) == null ? void 0 : _b.value;
-      const cutomerData = JSON.parse(cutomerMetaFieldValue);
-      setCompantIssue(((_c = cutomerData.companyIssues) == null ? void 0 : _c.length) == 0 ? false : true);
-      localallotmentBalance = cutomerData.allotmentBalance;
-      localPayRollBalance = cutomerData.payrollBalance;
-      localpayrollMinimum = cutomerData.minimumPayrollTransactionAmount;
-      if (!applyed) {
-        setpayrollMinimum(localpayrollMinimum);
-        setAllotmentBalance(localallotmentBalance);
-        setPayrollBalance(localallotmentBalance);
-        let balance = 0;
-        if (localallotmentBalance > 0) {
-          balance = cost - localallotmentBalance;
-          setAllotment(cost - balance);
-        }
-        if (localPayRollBalance > 0 && cost - localallotmentBalance > 0) {
-          useLocalStorage.read("tempPayroll").then((data) => {
-            console.log("tempPayroll", data);
-            setPayroll(data);
-          }).catch((err) => {
-            console.log("tempPayrollerr", err);
-          });
-        }
-      }
-      if (applyed) {
-      }
-    }, 0);
     const applyShopyPayment = () => __async(this, null, function* () {
       setApplyPaymentLoader(true);
+      const shopyCheckout = yield getShopyCheckout(token, customerId);
+      const shopyCheckoutData = JSON.parse(shopyCheckout);
+      console.log("shopyCheckoutData", shopyCheckoutData);
+      const cost = shopyCheckoutData.data[0].totalDue;
+      console.log("cost of extensibility", Cost);
+      console.log("due from shopy", shopyCheckoutData.data[0].totalDue);
+      const dueToShow = shopyCheckoutData.data[0].totalDue - shopyDiff;
+      console.log("dueToShow", dueToShow);
+      setShopyDue(dueToShow);
       if (companyIssue) {
+        yield useLocalStorage.write("cost", cost);
+        yield useLocalStorage.write("companyIssue", "companyIssue");
         yield createPaymentDetails(token, cost, 0, 0, true);
       } else {
-        useLocalStorage.write("allotmentBalance", allotmentBalance);
-        useLocalStorage.write("payrollBalance", payrollBalance);
-        useLocalStorage.write("payrollMinimum", payrollMinimum);
-        useLocalStorage.write("payroll", payroll);
-        useLocalStorage.write("allotment", allotment);
-        useLocalStorage.write("applyed", true);
-        yield createPaymentDetails(token, cost, allotment, payroll);
+        yield useLocalStorage.write("cost", cost);
+        yield useLocalStorage.write("allotment", allotment);
+        yield useLocalStorage.write("payroll", payroll);
+        yield createPaymentDetails(token, cost, allotment, payroll, false);
       }
-      const status = yield pullCheckout(token);
+      const status = yield pullCheckout(token, customerId);
       if (status == "ready") {
-        setapplyed(true);
-        setApplyPaymentLoader(false);
-        api.ui.overlay.close("apply-payment");
+        const shopyCheckout2 = yield getShopyCheckout(token, customerId);
+        const shopyCheckoutData2 = JSON.parse(shopyCheckout2);
+        console.log("cost of extensibility", Cost);
+        console.log("due from shopy", shopyCheckoutData2.data[0].totalDue);
+        const dueToShow2 = shopyCheckoutData2.data[0].totalDue - shopyDiff;
+        console.log("dueToShow", dueToShow2);
+        setShopyDue(dueToShow2);
+        const discountdata = yield getDiscountCode(shopyCheckoutData2.data[0].discountId, customerId);
+        const discountData = JSON.parse(discountdata);
+        const result = yield applyDiscountCodeChange({
+          type: "addDiscountCode",
+          code: discountData.data.code
+        });
+        setTimeout(() => {
+          if (companyIssue) {
+            setShopyDue(0);
+            console.log("companyIssue APPLIED SHOPY DUE");
+          }
+          setCompleted(true);
+          setapplyed(true);
+          setApplyPaymentLoader(false);
+          setCompantIssueProcess(false);
+          api.ui.overlay.close("apply-payment");
+        }, 1e3);
       } else {
-        setapplyed(false);
-        useLocalStorage.write("applyed", false);
-        setApplyPaymentLoader(false);
-        api.ui.overlay.close("apply-payment");
+        setTimeout(() => {
+          setapplyed(false);
+          useLocalStorage.write("applyed", false);
+          setApplyPaymentLoader(false);
+          api.ui.overlay.close("apply-payment");
+        }, 1e3);
       }
     });
     const clearShopyPayment = () => __async(this, null, function* () {
       setclearPaymentLoader(true);
       yield clearPaymentDetails(token);
-      const status = yield pullCheckout(token);
+      const status = yield pullCheckout(token, customerId);
       if (status == "ready") {
-        setapplyed(false);
-        useLocalStorage.write("applyed", false);
-        setclearPaymentLoader(false);
-        api.ui.overlay.close("remove-payment");
+        const shopyCheckout = yield getShopyCheckout(token, customerId);
+        const shopyCheckoutData = JSON.parse(shopyCheckout);
+        console.log("cost of extensibility", Cost);
+        console.log("due from shopy", shopyCheckoutData.data[0].totalDue);
+        const dueToShow = shopyCheckoutData.data[0].totalDue - shopyDiff;
+        console.log("dueToShow", dueToShow);
+        setShopyDue(dueToShow);
+        const discountdata = yield getDiscountCode(shopyCheckoutData.data[0].discountId, customerId);
+        const discountData = JSON.parse(discountdata);
+        const result = yield applyDiscountCodeChange({
+          type: "addDiscountCode",
+          code: discountData.data.code
+        });
+        setTimeout(() => {
+          setCompleted(false);
+          setapplyed(false);
+          useLocalStorage.write("applyed", false);
+          setclearPaymentLoader(false);
+          api.ui.overlay.close("remove-payment");
+        }, 1e3);
       } else {
-        setapplyed(true);
-        setclearPaymentLoader(false);
-        api.ui.overlay.close("remove-payment");
+        setTimeout(() => {
+          setapplyed(true);
+          setclearPaymentLoader(false);
+          api.ui.overlay.close("remove-payment");
+        }, 1e3);
       }
     });
     (0, import_react22.useEffect)(() => {
+      updateValues();
     }, []);
-    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: selectedPaymentType == "manualPayment" ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(BlockStack2, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { border: "base", padding: "base", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(
-      Grid2,
-      {
-        columns: ["33%", "33%", "33%"],
-        rows: [60, "auto"],
-        spacing: "loose",
-        children: [
-          !companyIssue ? /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_jsx_runtime4.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: "Allotments:" }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { border: "base", padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Text2, { children: [
-              formatMoney(allotment),
-              " "
-            ] }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { border: "base", padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Text2, { children: [
-              " ",
-              formatMoney(allotmentBalance - allotment),
-              " available"
-            ] }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: "Payroll:" }) }),
-            allotmentBalance - allotment == 0 && cost - allotment > 0 && payrollBalance > 0 ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Stepper2, { label: "$", value: payroll / 100, min: 0, max: payrollBalance / 100 > (cost - allotment - payroll) / 100 ? (cost - allotment - payroll) / 100 : payrollBalance / 100, onChange: (value) => {
-              console.log("value in stepper", value);
-              const amount = value * 100;
-              const balance = cost - allotment - amount < 0 ? cost - allotment - amount : 0;
-              useLocalStorage.write("tempPayroll", amount + balance);
-              setPayroll(amount - balance);
-            } }) }) }) : /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { border: "base", padding: "loose", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Text2, { children: [
-                " ",
-                formatMoney(payroll),
-                " "
-              ] }),
-              " "
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { border: "base", padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Text2, { children: [
-              " ",
-              formatMoney(payrollBalance - payroll),
-              " available"
-            ] }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Text2, { children: [
-              " Minumum Payroll ",
-              formatMoney(payrollMinimum)
-            ] }) })
-          ] }) : /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_jsx_runtime4.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: "Company Issue: " }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { padding: "loose", children: [
-              "  ",
-              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Checkbox2, { checked: companyIssue, disabled: companyIssue, id: "checkbox", name: "checkbox" })
-            ] })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, {}),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, {}),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { children: !applyed ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-            Button2,
+    useBuyerJourneyIntercept(
+      ({ canBlockProgress }) => {
+        return canBlockProgress && selectedPaymentType == "manualPayment" && shopyDue > 0 ? {
+          behavior: "block",
+          reason: "Comlete the payment",
+          errors: [
             {
-              kind: "primary",
-              loading: applyPaymentLoader,
-              onPress: () => {
-                applyShopyPayment();
-              },
-              overlay: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-                Modal2,
-                {
-                  id: "apply-payment",
-                  padding: true,
-                  title: "APPLYING M&H PAYMENT. DO NOT REFRESH YOUR SCREEN AND CLOSE THIS.",
-                  children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { accessibilityRole: "alert", inlineAlignment: "center", padding: "loose", children: [
-                    " ",
-                    /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { appearance: "accent", size: "large" })
-                  ] })
-                }
-              ),
-              children: "Apply M&H Funds"
+              // An error without a `target` property is shown at page level
+              message: "Pay the pending payment to complete the order"
             }
-          ) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-            Button2,
-            {
-              loading: clearPaymentLoader,
-              kind: "primary",
-              appearance: "critical",
-              onPress: () => {
-                clearShopyPayment();
-              },
-              overlay: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-                Modal2,
-                {
-                  id: "remove-payment",
-                  padding: true,
-                  title: "REMOVING M&H PAYMENT. DO NOT REFRESH YOUR SCREEN AND CLOSE THIS.",
-                  children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { accessibilityRole: "alert", inlineAlignment: "center", padding: "loose", children: [
-                    " ",
-                    /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { appearance: "accent", size: "large" })
-                  ] })
-                }
-              ),
-              children: "Clear"
-            }
-          ) })
-        ]
+          ]
+        } : {
+          behavior: "allow"
+        };
       }
-    ) }) }) }) : "" });
+    );
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_jsx_runtime4.Fragment, { children: [
+      !companyIssueProcess ? "" : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Banner2, { title: "Please wait, we are applying compnay issue.", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { size: "large" }) }) }),
+      selectedPaymentType == "manualPayment" ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(BlockStack2, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { border: "base", padding: "base", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(
+        Grid2,
+        {
+          columns: ["33%", "33%", "33%"],
+          rows: [60, "auto"],
+          spacing: "loose",
+          children: [
+            !companyIssue ? /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_jsx_runtime4.Fragment, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: "Allotments:" }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { border: "base", padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Text2, { children: [
+                formatMoney(allotment),
+                " "
+              ] }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { border: "base", padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Text2, { children: [
+                " ",
+                formatMoney(allotmentBalance - allotment),
+                " available"
+              ] }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: "Payroll:" }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Stepper2, { label: "$", value: Number((payroll / 100).toFixed(2)), min: 0, max: balanceCost > payrollBalance ? payrollBalance / 100 : balanceCost / 100, onChange: (value) => {
+                console.log("value in stepper", value);
+                const amount = value * 100;
+                setPayroll(amount);
+                setBalanceCost(balanceCostAfterAllotment - amount);
+              } }) }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { border: "base", padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Text2, { children: [
+                " ",
+                formatMoney(payrollBalance - payroll),
+                " available"
+              ] }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, {}),
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, {}),
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Text2, { children: [
+                " Minumum Payroll ",
+                formatMoney(payrollMinimum)
+              ] }) })
+            ] }) : /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_jsx_runtime4.Fragment, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: "Company Issue: " }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, {}),
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { padding: "loose", children: [
+                "  ",
+                /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Checkbox2, { checked: companyIssue, disabled: companyIssue, id: "checkbox", name: "checkbox" })
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { children: !completed ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+              Button2,
+              {
+                kind: "primary",
+                loading: applyPaymentLoader,
+                onPress: () => {
+                  if (payroll < payrollMinimum) {
+                    setTimeout(() => {
+                      api.ui.overlay.close("payroll_minimum");
+                    }, 3e3);
+                  } else {
+                    applyShopyPayment();
+                  }
+                },
+                overlay: payroll < payrollMinimum ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                  Modal2,
+                  {
+                    id: "payroll_minimum",
+                    padding: true,
+                    title: "Try Another Payment Methods",
+                    children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { accessibilityRole: "alert", inlineAlignment: "center", padding: "loose", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: "Payroll amount lower then Payroll minimum transaction amount. complete payment with other payment methods" }) })
+                  }
+                ) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                  Modal2,
+                  {
+                    id: "apply-payment",
+                    padding: true,
+                    title: "APPLYING M&H PAYMENTS. DO NOT REFRESH YOUR SCREEN AND CLOSE THIS.",
+                    children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { accessibilityRole: "alert", inlineAlignment: "center", padding: "loose", children: [
+                      " ",
+                      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { appearance: "accent", size: "large" })
+                    ] })
+                  }
+                ),
+                children: "Apply M&H Funds"
+              }
+            ) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+              Button2,
+              {
+                disabled: companyIssue,
+                loading: clearPaymentLoader,
+                kind: "primary",
+                appearance: "critical",
+                onPress: () => {
+                  clearShopyPayment();
+                },
+                overlay: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                  Modal2,
+                  {
+                    id: "remove-payment",
+                    padding: true,
+                    title: "REMOVING M&H PAYMENT. DO NOT REFRESH YOUR SCREEN AND CLOSE THIS.",
+                    children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { accessibilityRole: "alert", inlineAlignment: "center", padding: "loose", children: [
+                      " ",
+                      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { appearance: "accent", size: "large" })
+                    ] })
+                  }
+                ),
+                children: "Clear"
+              }
+            ) })
+          ]
+        }
+      ) }) }) }) : "",
+      completed && shopyDue > 0 ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "extraLarge", children: `Pay Balance ${(shopyDue / 100).toFixed(2)} with other payment method` }) : ""
+    ] });
   }
 })();

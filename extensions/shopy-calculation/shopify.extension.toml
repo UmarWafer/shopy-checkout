@@ -16,7 +16,7 @@ handle = "shopy-calculation"
 
 [[extensions.targeting]]
 module = "./src/Checkout.tsx"
-target = "purchase.checkout.payment-method-list.render-before"
+target = "purchase.checkout.shipping-option-list.render-before"
 
 [extensions.capabilities]
 # Gives your extension access to directly query Shopify’s storefront API.
@@ -31,6 +31,18 @@ block_progress = true
 # Loads metafields on checkout resources, including the cart,
 # products, customers, and more. Learn more:
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#metafields
+
+ [[extensions.metafields]]
+ namespace = "customer"
+ key = "customer"
+
+ [[extensions.metafields]]
+ namespace = "shopy"
+ key = "customer"
+
+ [[extensions.metafields]]
+ namespace = "checkout"
+ key = "shipping"
 
 # [[extensions.metafields]]
 # namespace = "my_namespace"

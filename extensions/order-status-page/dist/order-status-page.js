@@ -1,9 +1,7 @@
 (() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
-  var __defProps = Object.defineProperties;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
   var __getOwnPropNames = Object.getOwnPropertyNames;
   var __getOwnPropSymbols = Object.getOwnPropertySymbols;
   var __getProtoOf = Object.getPrototypeOf;
@@ -21,7 +19,6 @@
       }
     return a;
   };
-  var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
   var __objRest = (source, exclude) => {
     var target = {};
     for (var prop in source)
@@ -627,7 +624,7 @@
             var newElement = ReactElement(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
             return newElement;
           }
-          function cloneElement(element, config, children) {
+          function cloneElement2(element, config, children) {
             if (element === null || element === void 0) {
               throw new Error("React.cloneElement(...): The argument must be a React element, but you passed " + element + ".");
             }
@@ -1081,7 +1078,7 @@
             }
             return false;
           }
-          function memo2(type, compare) {
+          function memo(type, compare) {
             {
               if (!isValidElementType(type)) {
                 error("memo: The first argument must be a component. Instead received: %s", type === null ? "null" : typeof type);
@@ -1119,7 +1116,7 @@
             }
             return dispatcher;
           }
-          function useContext3(Context) {
+          function useContext2(Context) {
             var dispatcher = resolveDispatcher();
             {
               if (Context._context !== void 0) {
@@ -1133,7 +1130,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState3(initialState) {
+          function useState2(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1141,11 +1138,11 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useReducer(reducer, initialArg, init);
           }
-          function useRef3(initialValue) {
+          function useRef(initialValue) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect4(create, deps) {
+          function useEffect3(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1157,11 +1154,11 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useLayoutEffect(create, deps);
           }
-          function useCallback(callback, deps) {
+          function useCallback2(callback, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useCallback(callback, deps);
           }
-          function useMemo2(create, deps) {
+          function useMemo(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useMemo(create, deps);
           }
@@ -1697,7 +1694,7 @@
             return validatedFactory;
           }
           function cloneElementWithValidation(element, props, children) {
-            var newElement = cloneElement.apply(this, arguments);
+            var newElement = cloneElement2.apply(this, arguments);
             for (var i = 2; i < arguments.length; i++) {
               validateChildKeys(arguments[i], newElement.type);
             }
@@ -1897,14 +1894,14 @@
           var createElement$1 = createElementWithValidation;
           var cloneElement$1 = cloneElementWithValidation;
           var createFactory = createFactoryWithValidation;
-          var Children2 = {
+          var Children = {
             map: mapChildren,
             forEach: forEachChildren,
             count: countChildren,
             toArray,
             only: onlyChild
           };
-          exports.Children = Children2;
+          exports.Children = Children;
           exports.Component = Component2;
           exports.Fragment = REACT_FRAGMENT_TYPE;
           exports.Profiler = REACT_PROFILER_TYPE;
@@ -1920,22 +1917,22 @@
           exports.forwardRef = forwardRef;
           exports.isValidElement = isValidElement2;
           exports.lazy = lazy;
-          exports.memo = memo2;
+          exports.memo = memo;
           exports.startTransition = startTransition;
           exports.unstable_act = act;
-          exports.useCallback = useCallback;
-          exports.useContext = useContext3;
+          exports.useCallback = useCallback2;
+          exports.useContext = useContext2;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect4;
+          exports.useEffect = useEffect3;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
           exports.useLayoutEffect = useLayoutEffect;
-          exports.useMemo = useMemo2;
+          exports.useMemo = useMemo;
           exports.useReducer = useReducer;
-          exports.useRef = useRef3;
-          exports.useState = useState3;
+          exports.useRef = useRef;
+          exports.useState = useState2;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -18401,10 +18398,10 @@
               return jsxWithValidation(type, props, key, false);
             }
           }
-          var jsx5 = jsxWithValidationDynamic;
+          var jsx4 = jsxWithValidationDynamic;
           var jsxs = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
-          exports.jsx = jsx5;
+          exports.jsx = jsx4;
           exports.jsxs = jsxs;
         })();
       }
@@ -18423,20 +18420,12 @@
     }
   });
 
-  // extensions/shopy-calculation/src/Checkout.tsx
-  var import_react14 = __toESM(require_react());
-
   // node_modules/@remote-ui/rpc/build/esm/memory.mjs
   function isBasicObject(value) {
     if (value == null || typeof value !== "object")
       return false;
     const prototype = Object.getPrototypeOf(value);
     return prototype == null || prototype === Object.prototype;
-  }
-
-  // node_modules/@remote-ui/core/build/esm/component.mjs
-  function createRemoteComponent(componentType) {
-    return componentType;
   }
 
   // node_modules/@remote-ui/core/build/esm/types.mjs
@@ -19090,7 +19079,7 @@
     return [hasChanged ? normalizedNewValue : IGNORE, hotSwaps];
   }
 
-  // node_modules/@shopify/ui-extensions/build/esm/utilities/registration.mjs
+  // extensions/order-status-page/node_modules/@shopify/ui-extensions/build/esm/utilities/registration.mjs
   function createExtensionRegistrationFunction() {
     const extensionWrapper = (target, implementation) => {
       var _shopify;
@@ -19121,20 +19110,11 @@
     return extensionWrapper;
   }
 
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/extension.mjs
+  // extensions/order-status-page/node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/extension.mjs
   var extension = createExtensionRegistrationFunction();
 
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Banner/Banner.mjs
-  var Banner = createRemoteComponent("Banner");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Spinner/Spinner.mjs
-  var Spinner = createRemoteComponent("Spinner");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/View/View.mjs
-  var View = createRemoteComponent("View");
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/render.mjs
-  var import_react6 = __toESM(require_react(), 1);
+  // extensions/order-status-page/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/render.mjs
+  var import_react4 = __toESM(require_react(), 1);
 
   // node_modules/@remote-ui/react/build/esm/render.mjs
   var import_react2 = __toESM(require_react(), 1);
@@ -19331,97 +19311,20 @@
     }), container, null, callback);
   }
 
-  // node_modules/@remote-ui/react/build/esm/components.mjs
-  var import_react4 = __toESM(require_react(), 1);
-  var import_jsx_runtime2 = __toESM(require_jsx_runtime(), 1);
-
-  // node_modules/@remote-ui/react/build/esm/hooks/render.mjs
+  // extensions/order-status-page/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/context.mjs
   var import_react3 = __toESM(require_react(), 1);
-  function useRender() {
-    const render3 = (0, import_react3.useContext)(RenderContext);
-    if (render3 == null) {
-      throw new Error("No remote-ui Render instance found in context");
-    }
-    return render3;
-  }
+  var ExtensionApiContext = /* @__PURE__ */ (0, import_react3.createContext)(null);
 
-  // node_modules/@remote-ui/react/build/esm/components.mjs
-  function createRemoteReactComponent(componentType, {
-    fragmentProps
-  } = {}) {
-    if (!fragmentProps || !fragmentProps.length) {
-      return componentType;
-    }
-    const wrapper = createComponentWrapper(componentType, fragmentProps);
-    wrapper.displayName = componentType;
-    return wrapper;
-  }
-  function createComponentWrapper(componentType, fragmentProps) {
-    const Component2 = componentType;
-    return /* @__PURE__ */ (0, import_react4.memo)(function ComponentWrapper(_a) {
-      var _b = _a, {
-        children: externalChildren = []
-      } = _b, externalProps = __objRest(_b, [
-        "children"
-      ]);
-      const fragments = (0, import_react4.useRef)({});
-      const {
-        root,
-        reconciler
-      } = useRender();
-      const {
-        props,
-        children
-      } = (0, import_react4.useMemo)(() => {
-        const portals = [];
-        const props2 = {};
-        for (const key of Object.keys(externalProps)) {
-          const element = externalProps[key];
-          if (fragmentProps.includes(key) && /* @__PURE__ */ (0, import_react4.isValidElement)(element)) {
-            const currentFragment = fragments.current[key];
-            const fragment = isRemoteFragment(currentFragment) ? currentFragment : root.createFragment();
-            fragments.current[key] = fragment;
-            Object.assign(fragment, {
-              createText(...args) {
-                return root.createText(...args);
-              },
-              createComponent(type, ...args) {
-                return root.createComponent(type, ...args);
-              }
-            });
-            const portal = reconciler.createPortal(element, fragment, null, null);
-            portals.push(portal);
-            props2[key] = fragment;
-          } else {
-            props2[key] = element;
-            delete fragments.current[key];
-          }
-        }
-        return {
-          props: props2,
-          children: [...import_react4.Children.toArray(externalChildren), ...portals]
-        };
-      }, [externalChildren, externalProps, root, reconciler, fragments]);
-      return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Component2, __spreadProps(__spreadValues({}, props), {
-        children
-      }));
-    });
-  }
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/context.mjs
-  var import_react5 = __toESM(require_react(), 1);
-  var ExtensionApiContext = /* @__PURE__ */ (0, import_react5.createContext)(null);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/render.mjs
-  var import_jsx_runtime3 = __toESM(require_jsx_runtime(), 1);
+  // extensions/order-status-page/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/render.mjs
+  var import_jsx_runtime2 = __toESM(require_jsx_runtime(), 1);
   function reactExtension(target, render3) {
     return extension(target, (root, api) => __async(this, null, function* () {
       const element = yield render3(api);
       yield new Promise((resolve, reject) => {
         try {
-          render(/* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ExtensionApiContext.Provider, {
+          render(/* @__PURE__ */ (0, import_jsx_runtime2.jsx)(ExtensionApiContext.Provider, {
             value: api,
-            children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ErrorBoundary, {
+            children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(ErrorBoundary, {
               children: element
             })
           }), root, () => {
@@ -19434,7 +19337,7 @@
       });
     }));
   }
-  var ErrorBoundary = class extends import_react6.Component {
+  var ErrorBoundary = class extends import_react4.Component {
     constructor(...args) {
       super(...args);
       this.state = {
@@ -19461,19 +19364,10 @@ ${errorInfo.componentStack}`);
     }
   };
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Banner/Banner.mjs
-  var Banner2 = createRemoteReactComponent(Banner);
+  // extensions/order-status-page/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
+  var import_react6 = __toESM(require_react(), 1);
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Spinner/Spinner.mjs
-  var Spinner2 = createRemoteReactComponent(Spinner);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/View/View.mjs
-  var View2 = createRemoteReactComponent(View);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
-  var import_react11 = __toESM(require_react(), 1);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/errors.mjs
+  // extensions/order-status-page/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/errors.mjs
   var CheckoutUIExtensionError = class extends Error {
     constructor(...args) {
       super(...args);
@@ -19486,27 +19380,21 @@ ${errorInfo.componentStack}`);
       this.name = "ScopeNotGrantedError";
     }
   };
-  var ExtensionHasNoMethodError = class extends Error {
-    constructor(method, target) {
-      super(`Cannot call '${method}()' on target '${target}'. The corresponding property was not found on the API.`);
-      this.name = "ExtensionHasNoMethodError";
-    }
-  };
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
+  // extensions/order-status-page/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
   function useApi(_target) {
-    const api = (0, import_react11.useContext)(ExtensionApiContext);
+    const api = (0, import_react6.useContext)(ExtensionApiContext);
     if (api == null) {
       throw new CheckoutUIExtensionError("You can only call this hook when running as a UI extension.");
     }
     return api;
   }
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/subscription.mjs
-  var import_react12 = __toESM(require_react(), 1);
+  // extensions/order-status-page/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/subscription.mjs
+  var import_react7 = __toESM(require_react(), 1);
   function useSubscription(subscription) {
-    const [, setValue] = (0, import_react12.useState)(subscription.current);
-    (0, import_react12.useEffect)(() => {
+    const [, setValue] = (0, import_react7.useState)(subscription.current);
+    (0, import_react7.useEffect)(() => {
       let didUnsubscribe = false;
       const checkForUpdates = (newValue) => {
         if (didUnsubscribe) {
@@ -19524,49 +19412,7 @@ ${errorInfo.componentStack}`);
     return subscription.current;
   }
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-journey.mjs
-  var import_react13 = __toESM(require_react(), 1);
-  function useBuyerJourneyIntercept(interceptor) {
-    const api = useApi();
-    if (!("buyerJourney" in api)) {
-      throw new ExtensionHasNoMethodError("buyerJourney", api.extension.target);
-    }
-    const interceptorRef = (0, import_react13.useRef)(interceptor);
-    interceptorRef.current = interceptor;
-    return (0, import_react13.useEffect)(() => {
-      const teardownPromise = api.buyerJourney.intercept((interceptorProps) => interceptorRef.current(interceptorProps));
-      return () => {
-        teardownPromise.then((teardown) => teardown()).catch(() => {
-        });
-      };
-    }, [api.buyerJourney]);
-  }
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/shipping-address.mjs
-  function useShippingAddress() {
-    const shippingAddress = useApi().shippingAddress;
-    if (!shippingAddress) {
-      throw new ScopeNotGrantedError("Using shipping address requires having shipping address permissions granted to your app.");
-    }
-    return useSubscription(shippingAddress);
-  }
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/cart-lines.mjs
-  function useCartLines() {
-    const {
-      lines
-    } = useApi();
-    return useSubscription(lines);
-  }
-  function useApplyCartLinesChange() {
-    const api = useApi();
-    if ("applyCartLinesChange" in api) {
-      return api.applyCartLinesChange;
-    }
-    throw new ExtensionHasNoMethodError("applyCartLinesChange", api.extension.target);
-  }
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-identity.mjs
+  // extensions/order-status-page/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-identity.mjs
   function useCustomer() {
     const buyerIdentity = useApi().buyerIdentity;
     if (!buyerIdentity) {
@@ -19575,58 +19421,33 @@ ${errorInfo.componentStack}`);
     return useSubscription(buyerIdentity.customer);
   }
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/discounts.mjs
-  function useApplyDiscountCodeChange() {
-    const api = useApi();
-    if ("applyDiscountCodeChange" in api) {
-      return api.applyDiscountCodeChange;
-    }
-    throw new ExtensionHasNoMethodError("applyDiscountCodeChange", api.extension.target);
+  // extensions/order-status-page/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/translate.mjs
+  var import_react8 = __toESM(require_react(), 1);
+  function useTranslate() {
+    const {
+      i18n
+    } = useApi();
+    const translate = (0, import_react8.useCallback)((...args) => {
+      const translation = i18n.translate(...args);
+      if (!Array.isArray(translation)) {
+        return translation;
+      }
+      return translation.map((part, index) => {
+        if (/* @__PURE__ */ (0, import_react8.isValidElement)(part)) {
+          return /* @__PURE__ */ (0, import_react8.cloneElement)(part, {
+            key: index
+          });
+        }
+        return part;
+      });
+    }, [i18n]);
+    return translate;
   }
 
-  // extensions/shopy-calculation/src/actions.ts
+  // extensions/order-status-page/src/actions.ts
   var host = "https://shopy-api.wafer.ee/sf/v2";
-  var refreshCheckout = (token, CustomerId) => __async(void 0, null, function* () {
-    const url = `${host}/checkouts/${token}/refresh`;
-    const data = JSON.stringify({ "step": "payment_method" });
-    return fetch(`${url}`, { method: "POST", headers: {
-      "Content-Type": "application/json",
-      "X-Customer-Id": `${CustomerId}`
-    }, body: data }).then((response) => response.text()).then((result) => {
-      return true;
-    }).catch((error) => {
-      console.log("error", error);
-      return false;
-    });
-  });
-  var updateAddress = (token, CustomerId, address) => __async(void 0, null, function* () {
-    const url = `${host}/checkouts_v2/${token}/update_address_in_shopify`;
-    const data = JSON.stringify(address);
-    return fetch(`${url}`, { method: "POST", headers: {
-      "Content-Type": "application/json",
-      "X-Customer-Id": `${CustomerId}`
-    }, body: data }).then((response) => response.text()).then((result) => {
-      return true;
-    }).catch((error) => {
-      console.log("error", error);
-      return false;
-    });
-  });
-  var updateShipping = (token, CustomerId) => __async(void 0, null, function* () {
-    const url = `${host}/checkouts_v2/${token}/update_shipping_line_in_shopify`;
-    const data = JSON.stringify({});
-    return fetch(`${url}`, { method: "POST", headers: {
-      "Content-Type": "application/json",
-      "X-Customer-Id": `${CustomerId}`
-    }, body: data }).then((response) => response.text()).then((result) => {
-      return true;
-    }).catch((error) => {
-      console.log("error", error);
-      return false;
-    });
-  });
-  var getShopyCheckout = (token, CustomerId) => __async(void 0, null, function* () {
-    const url = `${host}/checkouts_v2/${token}/getcheckout`;
+  var getOrder = (token, CustomerId) => __async(void 0, null, function* () {
+    const url = `${host}/checkouts_v2/${token}/get_order_v2`;
     const data = JSON.stringify({});
     return fetch(`${url}`, { method: "POST", headers: {
       "Content-Type": "application/json",
@@ -19637,176 +19458,30 @@ ${errorInfo.componentStack}`);
       console.log("error", error);
       return false;
     });
-  });
-  var getDiscountCode = (id, CustomerId) => __async(void 0, null, function* () {
-    const url = `${host}/checkouts_v2/get_discount_code/${id}`;
-    const data = JSON.stringify({});
-    return fetch(`${url}`, { method: "POST", headers: {
-      "Content-Type": "application/json",
-      "X-Customer-Id": `${CustomerId}`
-    }, body: data }).then((response) => response.text()).then((result) => {
-      return result;
-    }).catch((error) => {
-      console.log("error", error);
-      return false;
-    });
-  });
-  var pullCheckout = (token, CustomerId) => __async(void 0, null, function* () {
-    const url = `${host}/checkouts_v2/${token}/poll`;
-    return new Promise((resolve, reject) => __async(void 0, null, function* () {
-      const pollCheckoutInterval = setInterval(() => __async(void 0, null, function* () {
-        try {
-          const response = yield fetch(url, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "X-Customer-Id": `${CustomerId}`
-            }
-          });
-          const result = yield response.text();
-          const parsedResult = JSON.parse(result);
-          const readyState = parsedResult.data[0].readyState;
-          if (readyState === "enqueued" || readyState === "processing") {
-          } else if (readyState === "ready") {
-            clearInterval(pollCheckoutInterval);
-            resolve("ready");
-          }
-        } catch (error) {
-          console.log("error", error);
-          clearInterval(pollCheckoutInterval);
-          reject(error);
-        }
-      }), 5e3);
-    }));
   });
 
-  // extensions/shopy-calculation/src/Checkout.tsx
-  var import_jsx_runtime4 = __toESM(require_jsx_runtime());
+  // extensions/order-status-page/src/Checkout.tsx
+  var import_react9 = __toESM(require_react());
+  var import_jsx_runtime3 = __toESM(require_jsx_runtime());
   var Checkout_default = reactExtension(
-    "purchase.checkout.shipping-option-list.render-before",
-    () => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Extension, {})
+    "purchase.thank-you.block.render",
+    () => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Extension, {})
   );
   function Extension() {
-    const [ready, setReady] = (0, import_react14.useState)(false);
-    const [render3, setRender] = (0, import_react14.useState)(false);
-    const shippingAdress = useShippingAddress();
-    const updateAttributes = useApplyCartLinesChange();
-    const customer = useCustomer();
-    const customerId = customer.id.replace("gid://shopify/Customer/", "");
+    const translate = useTranslate();
     const api = useApi();
-    const applyDiscountCodeChange = useApplyDiscountCodeChange();
-    const shippingAddress = useShippingAddress();
     const checkoutToken = api.checkoutToken.current;
     const token = checkoutToken;
-    const calculate = () => __async(this, null, function* () {
-      console.log("customerId", customerId);
-      yield updateAddress(token, customerId, shippingAddress);
-      yield updateShipping(token, customerId);
-      yield refreshCheckout(token, customerId);
-      const status = yield pullCheckout(token, customerId);
-      if (status == "ready") {
-        console.log("ready");
-        const shopyCheckout = yield getShopyCheckout(token, customerId);
-        const shopyCheckoutData = JSON.parse(shopyCheckout);
-        const discountdata = yield getDiscountCode(shopyCheckoutData.data[0].discountId, customerId);
-        const discountData = JSON.parse(discountdata);
-        const result = yield applyDiscountCodeChange({
-          type: "addDiscountCode",
-          code: discountData.data.code
-        });
-        setTimeout(() => __async(this, null, function* () {
-          yield updateCartLine(shopyCheckoutData.attributes);
-        }), 1e3);
-      }
+    const customer = useCustomer();
+    const customerId = customer.id.replace("gid://shopify/Customer/", "");
+    const getvalues = () => __async(this, null, function* () {
+      const getorder = yield getOrder(token, customerId);
+      const getOrderData = JSON.parse(getorder);
+      console.log("getOrderData", getOrderData);
     });
-    const cartLines = useCartLines();
-    const updateCartLine = (data) => __async(this, null, function* () {
-      console.log("cartLines", cartLines);
-      const transformedArray = cartLines.map((item) => ({
-        id: item.id,
-        merchandiseId: item.merchandise.id,
-        attributes: []
-      }));
-      console.log("transformedArray", { transformedArray });
-      const updatedArry = updateExistingAttributes(transformedArray, data);
-      console.log("updatedArry", { updatedArry });
-      yield updateItemsWithRetry(updatedArry);
-      console.log("update");
-    });
-    const updateExistingAttributes = (originalArray, additionalAttributes) => {
-      additionalAttributes.forEach((additional) => {
-        const existingEntry = originalArray.find(
-          (entry) => entry.merchandiseId === additional.merchandiseId
-        );
-        if (existingEntry) {
-          existingEntry.attributes = additional.attributes;
-        }
-      });
-      return originalArray;
-    };
-    const retryUpdate = (item, attempt) => __async(this, null, function* () {
-      const currentAttempt = attempt || 1;
-      const updated = yield updateAttributes({
-        type: "updateCartLine",
-        id: item.id,
-        merchandiseId: item.merchandiseId,
-        attributes: item.attributes
-      });
-      if (updated.type == "success") {
-        console.log("success");
-        return updated.type;
-      } else if (currentAttempt > 100) {
-        console.log("trried more than 100 attempts");
-      } else {
-        return new Promise((resolve, reject) => {
-          setTimeout(
-            () => retryUpdate(item, currentAttempt + 1).then(resolve).catch(reject),
-            500
-          );
-        });
-      }
-    });
-    function updateItemsWithRetry(updatedArray) {
-      return __async(this, null, function* () {
-        const length = updatedArray.length;
-        let done = 0;
-        for (const item of updatedArray) {
-          let lastUpdateSuccessful = false;
-          while (!lastUpdateSuccessful) {
-            const result = yield retryUpdate(item, updatedArray);
-            if (result === "success") {
-              lastUpdateSuccessful = true;
-              done++;
-              if (done == length) {
-                setReady(true);
-              }
-            } else {
-            }
-          }
-        }
-      });
-    }
-    (0, import_react14.useEffect)(() => {
-      setTimeout(() => {
-        calculate();
-      }, 5e3);
+    (0, import_react9.useEffect)(() => {
+      getvalues();
     }, []);
-    useBuyerJourneyIntercept(
-      ({ canBlockProgress }) => {
-        return canBlockProgress && !ready ? {
-          behavior: "block",
-          reason: "Calculation Not Completed",
-          errors: [
-            {
-              // An error without a `target` property is shown at page level
-              message: "Please wait, we are calculating your shipping and taxes. Do not click payment if you saw loader otherwise click payment"
-            }
-          ]
-        } : {
-          behavior: "allow"
-        };
-      }
-    );
-    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: ready ? "" : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Banner2, { title: "Please wait, we are calculating your shipping and taxes.", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { size: "large" }) }) }) });
+    return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_jsx_runtime3.Fragment, {});
   }
 })();

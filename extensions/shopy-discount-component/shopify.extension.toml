@@ -3,12 +3,12 @@
 
 # The version of APIs your extension will receive. Learn more:
 # https://shopify.dev/docs/api/usage/versioning
-api_version = "2023-10"
+api_version = "2024-01"
 
 [[extensions]]
 type = "ui_extension"
-name = "custom-shipping"
-handle = "custom-shipping"
+name = "shopy-discount-component"
+handle = "shopy-discount-component"
 
 # Controls where in Shopify your extension will be injected,
 # and the file that contains your extension’s source code. Learn more:
@@ -16,14 +16,13 @@ handle = "custom-shipping"
 
 [[extensions.targeting]]
 module = "./src/Checkout.tsx"
-target = "purchase.checkout.delivery-address.render-before"
+target = "purchase.checkout.reductions.render-before"
 
 [extensions.capabilities]
 # Gives your extension access to directly query Shopify’s storefront API.
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#api-access
 api_access = true
 block_progress = true
-
 # Gives your extension access to make external network calls, using the
 # JavaScript `fetch()` API. Learn more:
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#network-access
@@ -39,22 +38,6 @@ network_access = true
 # [[extensions.metafields]]
 # namespace = "my_namespace"
 # key = "my_other_key"
-
- [[extensions.metafields]]
-namespace = "CompanyIssue"
-key = "CompanyIssue"
-
-[[extensions.metafields]]
- namespace = "shopy"
- key = "customer"
-
- [[extensions.metafields]]
- namespace = "checkout"
- key = "shipping"
-
- [[extensions.metafields]]
- namespace = "customer"
- key = "customer"
 
 # Defines settings that will be collected from merchants installing
 # your extension. Learn more:
