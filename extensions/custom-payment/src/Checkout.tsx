@@ -23,6 +23,7 @@ import {
   useCustomer,
   useApplyDiscountCodeChange,
   useBuyerJourneyIntercept,
+  useDiscountCodes,
 } from '@shopify/ui-extensions-react/checkout';
 import {createPaymentDetails ,clearPaymentDetails,pullCheckout, getShopyCheckout, getData, getCustomerDetails, getCompanyIssue, getDiscountCode} from './actions'
 import { formatMoney } from './utlis';
@@ -68,7 +69,8 @@ function Extension() {
   const [shopyDiff ,setShopyDiff] = useState<null |any >(false);
   const [companyIssueProcess , setCompantIssueProcess] =useState<boolean>(false);
   
-
+  const useDiscountcodes = useDiscountCodes()
+  
 
   const updateValues = async ()=>{
     console.log("updateValues")
@@ -190,10 +192,20 @@ if(status=='ready'){
     const discountdata = await getDiscountCode(shopyCheckoutData.data[0].discountId,customerId)
     const discountData = JSON.parse(discountdata as string)
     //console.log("discountdata", discountdata)
-    const result = await applyDiscountCodeChange({
-    type:"addDiscountCode",
-    code:discountData.data.code
-  })
+
+    await retryAppliDiscount(
+      "removeDiscountCode",
+    useDiscountcodes[0].code
+    )
+
+    await retryAppliDiscount(
+    "addDiscountCode",
+    discountData.data.code
+  )
+  //   const result = await applyDiscountCodeChange({
+  //   type:"addDiscountCode",
+  //   code:discountData.data.code
+  // })
   
   setTimeout(() =>{
     if(companyIssue){
@@ -216,6 +228,10 @@ if(status=='ready'){
   },1000)
   
 }
+api.ui.overlay.close('apply-payment')
+api.ui.overlay.close('remove-payment')
+api.ui.overlay.close('remove-payment')
+
   }
 
   const clearShopyPayment = async () => {
@@ -235,10 +251,20 @@ if(status=='ready'){
     const discountdata = await getDiscountCode(shopyCheckoutData.data[0].discountId,customerId)
     const discountData = JSON.parse(discountdata as string)
     //console.log("discountdata", discountdata)
-    const result = await applyDiscountCodeChange({
-    type:"addDiscountCode",
-    code:discountData.data.code
-  })
+  //   const result = await applyDiscountCodeChange({
+  //   type:"addDiscountCode",
+  //   code:discountData.data.code
+  // })
+
+  await retryAppliDiscount(
+    "removeDiscountCode",
+  useDiscountcodes[0].code
+  )
+
+  await retryAppliDiscount(
+  "addDiscountCode",
+  discountData.data.code
+)
   setTimeout(() =>{
     setCompleted(false)
     setapplyed(false)
@@ -283,6 +309,38 @@ if(status=='ready'){
         };
     },
   );
+
+  const retryAppliDiscount = async (
+    type:any,
+    code:any, 
+    attempt?: number,
+  )=>{
+    const currentAttempt = attempt || 1;
+    const updated = await applyDiscountCodeChange({
+      type:type,
+      code:code
+    },);
+    // @ts-ignore
+console.log(`retryAppliDiscount_${type} code ${code}`, updated);
+    // console.log({ready});
+    if (updated.type=='success') {
+      console.log("success")
+    return updated.type
+    } else if (currentAttempt > 100) {
+      console.log("retryAppliDiscount tried more than 100 attempts")
+    } else {
+     
+      return new Promise((resolve, reject) => {
+        setTimeout(
+          () =>
+          retryAppliDiscount(code, currentAttempt + 1)
+              .then(resolve)
+              .catch(reject),
+          500
+        );
+      });
+    }
+  };
 
   return (
     <>
