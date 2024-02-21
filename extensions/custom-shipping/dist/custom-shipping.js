@@ -19627,7 +19627,6 @@ ${errorInfo.componentStack}`);
     const checkoutToken = api.checkoutToken.current;
     const token = checkoutToken;
     const customer = useCustomer();
-    window.location.pathname;
     const customerId = customer.id.replace("gid://shopify/Customer/", "");
     const customerEmail = customer.email;
     const [loading, setLoading] = (0, import_react15.useState)(false);

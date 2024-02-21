@@ -31,7 +31,7 @@ function Extension() {
  const customer = useCustomer();
 //  const app = useAppMetafields()
 //  console.log("app",app)
-window.location.pathname
+// window.location.pathname
 //  const delivery =  useDeliveryGroups();
 //  console.log("delivery",delivery)
  
@@ -39,7 +39,7 @@ window.location.pathname
  const customerId = customer.id.replace("gid://shopify/Customer/", "");
  const customerEmail = customer.email
 
- const [loading, setLoading] = useState<boolean>(false);
+ const [loading, setLoading] = useState<boolean>(true);//cahange to true for m & H 
  const [companyIssue , setCompantIssue] =useState<boolean>(false);
 
  const metafieldNamespace = "delivery-customization";

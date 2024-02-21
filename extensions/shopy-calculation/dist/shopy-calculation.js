@@ -1161,7 +1161,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useCallback(callback, deps);
           }
-          function useMemo2(create, deps) {
+          function useMemo3(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useMemo(create, deps);
           }
@@ -1932,7 +1932,7 @@
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
           exports.useLayoutEffect = useLayoutEffect;
-          exports.useMemo = useMemo2;
+          exports.useMemo = useMemo3;
           exports.useReducer = useReducer;
           exports.useRef = useRef3;
           exports.useState = useState3;
@@ -18424,7 +18424,7 @@
   });
 
   // extensions/shopy-calculation/src/Checkout.tsx
-  var import_react14 = __toESM(require_react());
+  var import_react15 = __toESM(require_react());
 
   // node_modules/@remote-ui/rpc/build/esm/memory.mjs
   function isBasicObject(value) {
@@ -19542,6 +19542,16 @@ ${errorInfo.componentStack}`);
     }, [api.buyerJourney]);
   }
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/metafields.mjs
+  var import_react14 = __toESM(require_react(), 1);
+  function useApplyMetafieldsChange() {
+    const api = useApi();
+    if ("applyMetafieldChange" in api) {
+      return api.applyMetafieldChange;
+    }
+    throw new ExtensionHasNoMethodError("applyMetafieldChange", api.extension.target);
+  }
+
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/shipping-address.mjs
   function useShippingAddress() {
     const shippingAddress = useApi().shippingAddress;
@@ -19564,6 +19574,11 @@ ${errorInfo.componentStack}`);
       return api.applyCartLinesChange;
     }
     throw new ExtensionHasNoMethodError("applyCartLinesChange", api.extension.target);
+  }
+
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/storage.mjs
+  function useStorage() {
+    return useApi().storage;
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-identity.mjs
@@ -19687,10 +19702,12 @@ ${errorInfo.componentStack}`);
     () => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Extension, {})
   );
   function Extension() {
-    const [ready, setReady] = (0, import_react14.useState)(false);
-    const [render3, setRender] = (0, import_react14.useState)(false);
+    const [ready, setReady] = (0, import_react15.useState)(false);
+    const [render3, setRender] = (0, import_react15.useState)(false);
     const shippingAdress = useShippingAddress();
     const updateAttributes = useApplyCartLinesChange();
+    const applyMetafieldsChange = useApplyMetafieldsChange();
+    const localStorage = useStorage();
     const customer = useCustomer();
     const customerId = customer.id.replace("gid://shopify/Customer/", "");
     const api = useApi();
@@ -19710,6 +19727,16 @@ ${errorInfo.componentStack}`);
         const shopyCheckoutData = JSON.parse(shopyCheckout);
         const discountdata = yield getDiscountCode(shopyCheckoutData.data[0].discountId, customerId);
         const discountData = JSON.parse(discountdata);
+        localStorage.write("discountdata", "discountdata");
+        yield applyMetafieldsChange(
+          {
+            type: "updateMetafield",
+            key: "checkout",
+            namespace: "checkout_extensibility",
+            value: "test",
+            valueType: "string"
+          }
+        );
         const result = yield applyDiscountCodeChange({
           type: "addDiscountCode",
           code: discountData.data.code
@@ -19755,13 +19782,13 @@ ${errorInfo.componentStack}`);
       if (updated.type == "success") {
         console.log("success");
         return updated.type;
-      } else if (currentAttempt > 100) {
-        console.log("trried more than 100 attempts");
+      } else if (currentAttempt > 200) {
+        console.log("trried more than 200 attempts");
       } else {
         return new Promise((resolve, reject) => {
           setTimeout(
             () => retryUpdate(item, currentAttempt + 1).then(resolve).catch(reject),
-            500
+            1e3
           );
         });
       }
@@ -19786,7 +19813,7 @@ ${errorInfo.componentStack}`);
         }
       });
     }
-    (0, import_react14.useEffect)(() => {
+    (0, import_react15.useEffect)(() => {
       setTimeout(() => {
         calculate();
       }, 5e3);
@@ -19810,3 +19837,4 @@ ${errorInfo.componentStack}`);
     return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: ready ? "" : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Banner2, { title: "Please wait, we are calculating your shipping and taxes.", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { size: "large" }) }) }) });
   }
 })();
+//# sourceMappingURL=shopy-calculation.js.map

@@ -43,12 +43,16 @@ block_progress = true
  [[extensions.metafields]]
  namespace = "checkout"
  key = "shipping"
+ 
+ [[extensions.metafields]]
+ namespace = "checkout_extensibility"
+ key = "checkout"
 
 # [[extensions.metafields]]
 # namespace = "my_namespace"
 # key = "my_key"
 # [[extensions.metafields]]
-# namespace = "my_namespace"
+# namespace = "my_namespace
 # key = "my_other_key"
 
 # Defines settings that will be collected from merchants installing

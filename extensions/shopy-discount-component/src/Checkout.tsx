@@ -18,10 +18,14 @@ import {
   Tag,
   Banner,
   Pressable,
-  useDiscountCodes
+  useDiscountCodes,
+  useMetafield,
+  useAppMetafields,
+  useStorage
 } from '@shopify/ui-extensions-react/checkout';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RemovePromotion, applyPromotion, getDiscountCode, getShopyCheckout, pullCheckout } from './actions';
+import {formatMoney} from './utlis'
 
 export default reactExtension(
   'purchase.checkout.reductions.render-before',
@@ -29,7 +33,6 @@ export default reactExtension(
 );
 
 function Extension() {
-  const translate = useTranslate();
   const api = useApi();
   const [applyloading, setapplyloading]=useState<boolean>(false);
   const [removeloading, setRemoveloading]=useState<boolean>(false);
@@ -45,6 +48,7 @@ function Extension() {
   const Cost =api.cost.totalAmount.current.amount;
   const customer = useCustomer();
   const useDiscountcodes = useDiscountCodes()
+  
   const applyDiscountCodeChange = useApplyDiscountCodeChange()
   
 //  console.log("customer custom",customer);
@@ -67,7 +71,6 @@ if(status=='ready'){
     type:"addDiscountCode",
     code:discountData.data.code
   })
-  
     api.ui.overlay.close('apply-discount')
     setapplyloading(false)
     setApplyed(true)
@@ -80,6 +83,8 @@ if(status=='ready'){
   api.ui.overlay.close('apply-discount')
 }
   }
+
+
   const RemoveDiscount = async () => {
     setRemoveloading(true)
    await  RemovePromotion(code,token,customer)
@@ -111,7 +116,6 @@ if(status=='ready'){
   //   type:"addDiscountCode",
   //   code:discountData.data.code
   // })
-  
     api.ui.overlay.close('remove-discount')
     setRemoveloading(false)
     setApplyed(false)
@@ -127,9 +131,14 @@ if(status=='ready'){
   }
 
 
+
+
+
+
+
   const retryAppliDiscount = async (
     type:any,
-    code:any,
+    code:any, 
     attempt?: number,
   )=>{
     const currentAttempt = attempt || 1;
@@ -208,7 +217,6 @@ console.log(`retryAppliDiscount_${type} code ${code}`, updated);
           </Button> */}
         </Modal>
       } >APPLY </Button></View></InlineLayout>
-    <InlineStack padding={'base'}><Text size="extraLarge">  </Text> </InlineStack>
     {applyed&&appliedcode?<InlineStack > <Pressable
       onPress={()=>{
         
@@ -238,7 +246,9 @@ console.log(`retryAppliDiscount_${type} code ${code}`, updated);
          <Spinner size='large' />
        </View>
     </Banner> :""}
-    </View></BlockStack>
+    </View>
+    <InlineStack padding={'tight'}><Text size="small">  </Text> </InlineStack>
+    </BlockStack>
    </>
   );
 }

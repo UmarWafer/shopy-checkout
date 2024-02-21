@@ -1145,7 +1145,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect3(create, deps) {
+          function useEffect4(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1927,7 +1927,7 @@
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect3;
+          exports.useEffect = useEffect4;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
@@ -19605,6 +19605,11 @@ ${errorInfo.componentStack}`);
     }, [api.buyerJourney]);
   }
 
+  // extensions/shopy-discount-component/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/storage.mjs
+  function useStorage() {
+    return useApi().storage;
+  }
+
   // extensions/shopy-discount-component/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-identity.mjs
   function useCustomer() {
     const buyerIdentity = useApi().buyerIdentity;
@@ -19742,6 +19747,12 @@ ${errorInfo.componentStack}`);
     }));
   });
 
+  // extensions/shopy-discount-component/src/utlis.ts
+  var formatMoney = (amount) => {
+    const amt = amount > 0 ? amount : 0;
+    return "$" + (amt / 100).toFixed(2);
+  };
+
   // extensions/shopy-discount-component/src/Checkout.tsx
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
   var Checkout_default = reactExtension(
@@ -19756,14 +19767,17 @@ ${errorInfo.componentStack}`);
     const [applyed, setApplyed] = (0, import_react25.useState)(false);
     const [code, setCode] = (0, import_react25.useState)(null);
     const [appliedcode, setAppliedCode] = (0, import_react25.useState)(null);
+    const [applyedPromo, setAppliedPromo] = (0, import_react25.useState)([]);
     const checkoutToken = api.checkoutToken.current;
     const token = checkoutToken;
     const Cost = api.cost.totalAmount.current.amount;
     const customer = useCustomer();
     const useDiscountcodes = useDiscountCodes();
+    const localStorage = useStorage();
     const applyDiscountCodeChange = useApplyDiscountCodeChange();
     const customerId = customer.id.replace("gid://shopify/Customer/", "");
     const applyDiscount = () => __async(this, null, function* () {
+      var _a;
       setapplyloading(true);
       setAppliedCode(code);
       yield applyPromotion(code, token, customer);
@@ -19777,6 +19791,7 @@ ${errorInfo.componentStack}`);
           type: "addDiscountCode",
           code: discountData.data.code
         });
+        setAppliedPromo((_a = shopyCheckoutData == null ? void 0 : shopyCheckoutData.data[0]) == null ? void 0 : _a.promotionApplications);
         api.ui.overlay.close("apply-discount");
         setapplyloading(false);
         setApplyed(true);
@@ -19787,6 +19802,7 @@ ${errorInfo.componentStack}`);
       }
     });
     const RemoveDiscount = () => __async(this, null, function* () {
+      var _a;
       setRemoveloading(true);
       yield RemovePromotion(code, token, customer);
       const status = yield pullCheckout(token, customerId);
@@ -19804,6 +19820,7 @@ ${errorInfo.componentStack}`);
           "addDiscountCode",
           discountData.data.code
         );
+        setAppliedPromo((_a = shopyCheckoutData == null ? void 0 : shopyCheckoutData.data[0]) == null ? void 0 : _a.promotionApplications);
         api.ui.overlay.close("remove-discount");
         setRemoveloading(false);
         setApplyed(false);
@@ -19814,7 +19831,18 @@ ${errorInfo.componentStack}`);
         api.ui.overlay.close("remove-discount");
       }
     });
-    const retryAppliDiscount = (code2, type, attempt) => __async(this, null, function* () {
+    const update = () => __async(this, null, function* () {
+      var _a;
+      const shopyCheckout = yield getShopyCheckout(token, customerId);
+      const shopyCheckoutData = JSON.parse(shopyCheckout);
+      setAppliedPromo((_a = shopyCheckoutData == null ? void 0 : shopyCheckoutData.data[0]) == null ? void 0 : _a.promotionApplications);
+    });
+    const deliveryInstructions = localStorage.read("discountdata").then((data) => data);
+    console.log("deliveryInstructions", deliveryInstructions);
+    (0, import_react25.useEffect)(() => {
+      update();
+    }, []);
+    const retryAppliDiscount = (type, code2, attempt) => __async(this, null, function* () {
       const currentAttempt = attempt || 1;
       const updated = yield applyDiscountCodeChange({
         type,
@@ -19851,75 +19879,89 @@ ${errorInfo.componentStack}`);
         };
       }
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(BlockStack2, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { padding: "loose", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "extraLarge", children: " Apply M&H Discount Code Here " }),
-        " ",
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Icon2, { size: "large", source: "chevronDown" })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineLayout2, { columns: ["fill", "20%"], spacing: "base", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(BlockStack2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { padding: "loose", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "extraLarge", children: " Apply M&H Discount Code Here " }),
           " ",
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TextField2, { icon: "discount", value: code, label: "M&H Dicount Code", onChange: (value) => {
-            setCode(value);
-          } }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Icon2, { size: "large", source: "chevronDown" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineLayout2, { columns: ["fill", "20%"], spacing: "base", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { children: [
+            " ",
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TextField2, { icon: "discount", value: code, label: "M&H Dicount Code", onChange: (value) => {
+              setCode(value);
+            } }),
+            " "
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+            Button2,
+            {
+              onPress: () => {
+                applyDiscount();
+              },
+              kind: "primary",
+              loading: applyloading,
+              overlay: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                Modal2,
+                {
+                  id: "apply-discount",
+                  padding: true,
+                  title: "APPLYING DISCOUNT CODE DO NOT REFRESH YOUR SCREEN AND CLOSE THIS.",
+                  children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { accessibilityRole: "alert", inlineAlignment: "center", padding: "loose", children: [
+                    " ",
+                    /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { appearance: "accent", size: "large" })
+                  ] })
+                }
+              ),
+              children: "APPLY "
+            }
+          ) })
+        ] }),
+        applyed && appliedcode ? /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { children: [
+          " ",
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+            Pressable2,
+            {
+              onPress: () => {
+                RemoveDiscount();
+              },
+              overlay: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                Modal2,
+                {
+                  id: "remove-discount",
+                  padding: true,
+                  title: "REMOVING DISCOUNT CODE DO NOT REFRESH YOUR SCREEN AND CLOSE THIS.",
+                  children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { accessibilityRole: "alert", inlineAlignment: "center", padding: "loose", children: [
+                    " ",
+                    /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { appearance: "accent", size: "large" })
+                  ] })
+                }
+              ),
+              children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Tag2, { icon: "discount", onRemove: () => {
+                RemoveDiscount();
+              }, children: appliedcode })
+            }
+          )
+        ] }) : "",
+        applyloading || removeloading ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Banner2, { title: `Please Wait, We Are  ${applyloading ? "Applying" : ""} ${removeloading ? "Removing" : ""} M&H Discount Code`, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { size: "large" }) }) }) : ""
+      ] }),
+      "testt",
+      (applyedPromo == null ? void 0 : applyedPromo.length) > 0 ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { padding: "tight", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "extraLarge", children: " Applied M&H Discounts" }),
           " "
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-          Button2,
-          {
-            onPress: () => {
-              applyDiscount();
-            },
-            kind: "primary",
-            loading: applyloading,
-            overlay: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-              Modal2,
-              {
-                id: "apply-discount",
-                padding: true,
-                title: "APPLYING DISCOUNT CODE DO NOT REFRESH YOUR SCREEN AND CLOSE THIS.",
-                children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { accessibilityRole: "alert", inlineAlignment: "center", padding: "loose", children: [
-                  " ",
-                  /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { appearance: "accent", size: "large" })
-                ] })
-              }
-            ),
-            children: "APPLY "
-          }
-        ) })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { padding: "base", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "extraLarge", children: "  " }),
+        applyedPromo == null ? void 0 : applyedPromo.map((obj) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineLayout2, { columns: ["fill", "20%"], children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { padding: "tight", children: obj.promotion.type }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { padding: "tight", inlineAlignment: "end", children: formatMoney(obj.value) })
+        ] }))
+      ] }) }) : "",
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { padding: "tight", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "small", children: "  " }),
         " "
-      ] }),
-      applyed && appliedcode ? /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { children: [
-        " ",
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-          Pressable2,
-          {
-            onPress: () => {
-              RemoveDiscount();
-            },
-            overlay: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-              Modal2,
-              {
-                id: "remove-discount",
-                padding: true,
-                title: "REMOVING DISCOUNT CODE DO NOT REFRESH YOUR SCREEN AND CLOSE THIS.",
-                children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { accessibilityRole: "alert", inlineAlignment: "center", padding: "loose", children: [
-                  " ",
-                  /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { appearance: "accent", size: "large" })
-                ] })
-              }
-            ),
-            children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Tag2, { icon: "discount", onRemove: () => {
-              RemoveDiscount();
-            }, children: appliedcode })
-          }
-        )
-      ] }) : "",
-      applyloading || removeloading ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Banner2, { title: `Please Wait, We Are  ${applyloading ? "Applying" : ""} ${removeloading ? "Removing" : ""} M&H Discount Code`, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { size: "large" }) }) }) : ""
-    ] }) }) });
+      ] })
+    ] }) });
   }
 })();
+//# sourceMappingURL=shopy-discount-component.js.map

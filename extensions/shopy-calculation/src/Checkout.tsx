@@ -17,6 +17,8 @@ import {
   useDeliveryGroup,
   useDeliveryGroups,
   useApplyCartLinesChange,
+  useApplyMetafieldsChange,
+  useStorage,
 } from '@shopify/ui-extensions-react/checkout';
 import { getDiscountCode, getShopyCheckout, pullCheckout, refreshCheckout, updateAddress, updateShipping } from './actions'
 import { array } from 'yup';
@@ -26,13 +28,15 @@ export default reactExtension(
 );
 
 function Extension() {
-  const [ready, setReady] = useState<boolean>(false);
+  const [ready, setReady] = useState<boolean>(false); // false for M & H 
   const [render, setRender] = useState<boolean>(false);
   const shippingAdress = useShippingAddress();
   //const tax = useTotalTaxAmount()
 //   const app = useAppMetafields()
 //  console.log("app",app)
 const updateAttributes = useApplyCartLinesChange()
+const applyMetafieldsChange = useApplyMetafieldsChange();
+const localStorage = useStorage()
   const customer = useCustomer();
   const customerId = customer.id.replace("gid://shopify/Customer/", "");
   //const provinece = shippingAdress.provinceCode
@@ -45,6 +49,7 @@ const updateAttributes = useApplyCartLinesChange()
   // const token ="0bf23b433a34d4990777624e0fa413b7"
   const token = checkoutToken;
   //console.log("checkoutToken", checkoutToken)
+
 
   const calculate = async () => {
     
@@ -63,6 +68,18 @@ const updateAttributes = useApplyCartLinesChange()
       const discountdata = await getDiscountCode(shopyCheckoutData.data[0].discountId,customerId)
       const discountData = JSON.parse(discountdata as string)
       //console.log("discountdata", discountdata)
+      localStorage.write("discountdata", "discountdata")
+      await applyMetafieldsChange(
+        {
+          type:"updateMetafield",
+          key:"checkout",
+          namespace:"checkout_extensibility",
+          value:"test",
+          valueType:"string"
+        
+        }
+      )
+      // namespace:"checkout_extensibility",
       const result = await applyDiscountCodeChange({
       type:"addDiscountCode",
       code:discountData.data.code
@@ -135,8 +152,8 @@ await updateItemsWithRetry(updatedArry)
     if (updated.type=='success') {
       console.log("success")
     return updated.type
-    } else if (currentAttempt > 100) {
-      console.log("trried more than 100 attempts")
+    } else if (currentAttempt > 200) {
+      console.log("trried more than 200 attempts")
     } else {
      
       return new Promise((resolve, reject) => {
@@ -145,7 +162,7 @@ await updateItemsWithRetry(updatedArry)
           retryUpdate(item, currentAttempt + 1)
               .then(resolve)
               .catch(reject),
-          500
+          1000
         );
       });
     }
