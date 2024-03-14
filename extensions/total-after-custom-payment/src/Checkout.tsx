@@ -24,6 +24,7 @@ function Extension() {
   const api = useApi();
   const [applyedPromo , setAppliedPromo]=useState<null |any >([])
   const [applyedPayments , setAppliedPayments]=useState<null |any >([])
+  const [total ,setTotal]=useState<null |any >(null)
 
   const checkoutToken =api.checkoutToken.current;
   //const token ="af7fb296f3848fb0f5508e934bb89706"
@@ -39,6 +40,7 @@ function Extension() {
     const shopyCheckoutData = JSON.parse(shopyCheckout as string)
     setAppliedPromo(shopyCheckoutData?.data[0]?.promotionApplications)
     setAppliedPayments(shopyCheckoutData?.data[0]?.paymentDetails)
+    setTotal(shopyCheckoutData?.data[0]?.total)
   }
 
   console.log("deliveryInstructions",applyedPromo )
@@ -58,8 +60,30 @@ function Extension() {
     </>:""}
     {applyedPayments?.length>0?<>
     {applyedPayments?.map((payment)=>(
+      <>
+{payment?.amount==total?<>
+
+  <InlineLayout columns={['fill', '20%']}>
+  <View  padding="none">
+        <Text size='medium'>Paid By {payment?.accountType} </Text>
+  </View>
+  <View  padding="none" inlineAlignment="end">
+  <Text size='medium'> -{formatMoney(payment.amount)} </Text>
+  </View>
+  </InlineLayout>
+
+  <InlineLayout columns={['fill', '20%']}>
+  <View  padding="none">
+        <Text size='large'>Balance</Text>
+  </View>
+  <View  padding="none" inlineAlignment="end">
+  <Text size='extraLarge'> {formatMoney(0)} </Text>
+  </View>
+  </InlineLayout>
+</>
+:
       <> {payment?.accountType==='CREDIT_CARD'? "":<InlineStack padding="none"><Icon size='base' source="discount" />  <Text size='base'> {payment?.accountType} SAVINGS   </Text> <Text>{formatMoney(payment?.amount)}</Text></InlineStack>}</>
-    ))}</>:""}
+     }</> ))}</>:""}
 {/*     
     {applyedPayments?.length>0?<>
     {applyedPayments?.map((payment)=>(

@@ -175,8 +175,28 @@ await useLocalStorage.write("allotment",allotment)
   //  useLocalStorage.write("payroll",payroll)
   //  useLocalStorage.write("allotment",allotment)
   //  useLocalStorage.write("applyed",true)
-      await createPaymentDetails(token,cost,allotment,payroll,false)
+   const shopyDue =cost
+   const shopyallotment = allotment
+   let shopypayroll= payroll 
+
+    const adjusted = cost-allotment-payroll
+    console.log("adjusted",adjusted)
+    console.log("shopyDiff",shopyDiff)
+    if(adjusted==Math.round(shopyDiff)&&adjusted!=0){
+      console.log("adjusted==shopyDiff")
+      if(adjusted<0){
+        console.log("adjusted<0")
+       await  createPaymentDetails(token,cost,payroll>0?allotment:allotment-adjusted,payroll>0?payroll-adjusted:payroll,false)
+      }
+      if (adjusted>0){
+        console.log("adjusted<0")
+      await   createPaymentDetails(token,cost,payroll>0?allotment:allotmentBalance>0?allotment+adjusted:allotment,payroll>0?payrollBalance>0?payroll+adjusted:payroll:payroll,false)
+      }
+     }else{
+      console.log("nORMAL")
+    await  createPaymentDetails(token,cost,allotment,payroll,false)
     }
+  }
 
 const status = await pullCheckout(token,customerId)
 if(status=='ready'){
@@ -493,7 +513,7 @@ console.log(`retryAppliDiscount_${type} code ${code}`, updated);
 
   </>:""}
 {completed&&shopyDue>0?
-  <Text size='extraLarge' >{`Pay Balance ${(shopyDue/100).toFixed(2)} with other payment method`}</Text>:""}
+  <Text size='extraLarge' >{`Pay Balance $ ${Cost} with other payment method`}</Text>:""}
   </>
     
 );
