@@ -19625,6 +19625,12 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/discounts.mjs
+  function useDiscountCodes() {
+    const {
+      discountCodes
+    } = useApi();
+    return useSubscription(discountCodes);
+  }
   function useApplyDiscountCodeChange() {
     const api = useApi();
     if ("applyDiscountCodeChange" in api) {
@@ -19803,6 +19809,7 @@ ${errorInfo.componentStack}`);
     const [shopyDue, setShopyDue] = (0, import_react22.useState)(false);
     const [shopyDiff, setShopyDiff] = (0, import_react22.useState)(false);
     const [companyIssueProcess, setCompantIssueProcess] = (0, import_react22.useState)(false);
+    const useDiscountcodes = useDiscountCodes();
     const updateValues = () => __async(this, null, function* () {
       console.log("updateValues");
       const shopyCheckout = yield getShopyCheckout(token, customerId);
@@ -19877,7 +19884,26 @@ ${errorInfo.componentStack}`);
         yield useLocalStorage.write("cost", cost);
         yield useLocalStorage.write("allotment", allotment);
         yield useLocalStorage.write("payroll", payroll);
-        yield createPaymentDetails(token, cost, allotment, payroll, false);
+        const shopyDue2 = cost;
+        const shopyallotment = allotment;
+        let shopypayroll = payroll;
+        const adjusted = cost - allotment - payroll;
+        console.log("adjusted", adjusted);
+        console.log("shopyDiff", shopyDiff);
+        if (adjusted == Math.round(shopyDiff) && adjusted != 0) {
+          console.log("adjusted==shopyDiff");
+          if (adjusted < 0) {
+            console.log("adjusted<0");
+            yield createPaymentDetails(token, cost, payroll > 0 ? allotment : allotment - adjusted, payroll > 0 ? payroll - adjusted : payroll, false);
+          }
+          if (adjusted > 0) {
+            console.log("adjusted<0");
+            yield createPaymentDetails(token, cost, payroll > 0 ? allotment : allotmentBalance > 0 ? allotment + adjusted : allotment, payroll > 0 ? payrollBalance > 0 ? payroll + adjusted : payroll : payroll, false);
+          }
+        } else {
+          console.log("nORMAL");
+          yield createPaymentDetails(token, cost, allotment, payroll, false);
+        }
       }
       const status = yield pullCheckout(token, customerId);
       if (status == "ready") {
@@ -19890,10 +19916,14 @@ ${errorInfo.componentStack}`);
         setShopyDue(dueToShow2);
         const discountdata = yield getDiscountCode(shopyCheckoutData2.data[0].discountId, customerId);
         const discountData = JSON.parse(discountdata);
-        const result = yield applyDiscountCodeChange({
-          type: "addDiscountCode",
-          code: discountData.data.code
-        });
+        yield retryAppliDiscount(
+          "removeDiscountCode",
+          useDiscountcodes[0].code
+        );
+        yield retryAppliDiscount(
+          "addDiscountCode",
+          discountData.data.code
+        );
         setTimeout(() => {
           if (companyIssue) {
             setShopyDue(0);
@@ -19913,6 +19943,9 @@ ${errorInfo.componentStack}`);
           api.ui.overlay.close("apply-payment");
         }, 1e3);
       }
+      api.ui.overlay.close("apply-payment");
+      api.ui.overlay.close("remove-payment");
+      api.ui.overlay.close("remove-payment");
     });
     const clearShopyPayment = () => __async(this, null, function* () {
       setclearPaymentLoader(true);
@@ -19928,10 +19961,14 @@ ${errorInfo.componentStack}`);
         setShopyDue(dueToShow);
         const discountdata = yield getDiscountCode(shopyCheckoutData.data[0].discountId, customerId);
         const discountData = JSON.parse(discountdata);
-        const result = yield applyDiscountCodeChange({
-          type: "addDiscountCode",
-          code: discountData.data.code
-        });
+        yield retryAppliDiscount(
+          "removeDiscountCode",
+          useDiscountcodes[0].code
+        );
+        yield retryAppliDiscount(
+          "addDiscountCode",
+          discountData.data.code
+        );
         setTimeout(() => {
           setCompleted(false);
           setapplyed(false);
@@ -19966,6 +20003,27 @@ ${errorInfo.componentStack}`);
         };
       }
     );
+    const retryAppliDiscount = (type, code, attempt) => __async(this, null, function* () {
+      const currentAttempt = attempt || 1;
+      const updated = yield applyDiscountCodeChange({
+        type,
+        code
+      });
+      console.log(`retryAppliDiscount_${type} code ${code}`, updated);
+      if (updated.type == "success") {
+        console.log("success");
+        return updated.type;
+      } else if (currentAttempt > 100) {
+        console.log("retryAppliDiscount tried more than 100 attempts");
+      } else {
+        return new Promise((resolve, reject) => {
+          setTimeout(
+            () => retryAppliDiscount(code, currentAttempt + 1).then(resolve).catch(reject),
+            500
+          );
+        });
+      }
+    });
     return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_jsx_runtime4.Fragment, { children: [
       !companyIssueProcess ? "" : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Banner2, { title: "Please wait, we are applying compnay issue.", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { size: "large" }) }) }),
       selectedPaymentType == "manualPayment" ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(BlockStack2, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { border: "base", padding: "base", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(
@@ -20078,8 +20136,7 @@ ${errorInfo.componentStack}`);
           ]
         }
       ) }) }) }) : "",
-      completed && shopyDue > 0 ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "extraLarge", children: `Pay Balance ${(shopyDue / 100).toFixed(2)} with other payment method` }) : ""
+      completed && shopyDue > 0 ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "extraLarge", children: `Pay Balance $ ${Cost} with other payment method` }) : ""
     ] });
   }
 })();
-//# sourceMappingURL=custom-payment.js.map

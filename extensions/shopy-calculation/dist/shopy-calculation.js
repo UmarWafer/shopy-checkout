@@ -19837,4 +19837,3 @@ ${errorInfo.componentStack}`);
     return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: ready ? "" : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Banner2, { title: "Please wait, we are calculating your shipping and taxes.", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { size: "large" }) }) }) });
   }
 })();
-//# sourceMappingURL=shopy-calculation.js.map

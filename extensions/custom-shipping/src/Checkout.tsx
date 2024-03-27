@@ -55,7 +55,8 @@ function Extension() {
   setLoading(true);
 const isCompanyIssue = await getCompanyIssue(token,customerId)
 const isCompanyIssuedData = JSON.parse(isCompanyIssue as string)
-await updateCustomerMetafield(isCompanyIssuedData.data.companyIssues?"Company Issue":"Fedex Ground",customerId)
+
+await updateCustomerMetafield(isCompanyIssuedData.data.companyIssues?"Company Issue":isCompanyIssuedData.data.isShippingDiscount?"Free Shipping":"Fedex Ground",customerId)
 setCompantIssue(isCompanyIssuedData.data.companyIssues)
 setLoading(false)
  }

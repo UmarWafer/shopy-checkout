@@ -19629,7 +19629,7 @@ ${errorInfo.componentStack}`);
     const customer = useCustomer();
     const customerId = customer.id.replace("gid://shopify/Customer/", "");
     const customerEmail = customer.email;
-    const [loading, setLoading] = (0, import_react15.useState)(false);
+    const [loading, setLoading] = (0, import_react15.useState)(true);
     const [companyIssue, setCompantIssue] = (0, import_react15.useState)(false);
     const metafieldNamespace = "delivery-customization";
     const metafieldKey = "function-configuration";
@@ -19641,7 +19641,7 @@ ${errorInfo.componentStack}`);
       setLoading(true);
       const isCompanyIssue = yield getCompanyIssue(token, customerId);
       const isCompanyIssuedData = JSON.parse(isCompanyIssue);
-      yield updateCustomerMetafield(isCompanyIssuedData.data.companyIssues ? "Company Issue" : "Fedex Ground", customerId);
+      yield updateCustomerMetafield(isCompanyIssuedData.data.companyIssues ? "Company Issue" : isCompanyIssuedData.data.isShippingDiscount ? "Free Shipping" : "Fedex Ground", customerId);
       setCompantIssue(isCompanyIssuedData.data.companyIssues);
       setLoading(false);
     });
@@ -19667,4 +19667,3 @@ ${errorInfo.componentStack}`);
     return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: loading ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Banner2, { title: "Please Wait We are Checking Company Issue Status ", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { size: "large" }) }) }) : "" });
   }
 })();
-//# sourceMappingURL=custom-shipping.js.map

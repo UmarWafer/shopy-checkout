@@ -627,7 +627,7 @@
             var newElement = ReactElement(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
             return newElement;
           }
-          function cloneElement2(element, config, children) {
+          function cloneElement(element, config, children) {
             if (element === null || element === void 0) {
               throw new Error("React.cloneElement(...): The argument must be a React element, but you passed " + element + ".");
             }
@@ -675,7 +675,7 @@
             }
             return ReactElement(element.type, key, ref, self, source, owner, props);
           }
-          function isValidElement3(object) {
+          function isValidElement2(object) {
             return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
           }
           var SEPARATOR = ".";
@@ -740,7 +740,7 @@
                   return c;
                 });
               } else if (mappedChild != null) {
-                if (isValidElement3(mappedChild)) {
+                if (isValidElement2(mappedChild)) {
                   {
                     if (mappedChild.key && (!_child || _child.key !== mappedChild.key)) {
                       checkKeyStringCoercion(mappedChild.key);
@@ -828,7 +828,7 @@
             }) || [];
           }
           function onlyChild(children) {
-            if (!isValidElement3(children)) {
+            if (!isValidElement2(children)) {
               throw new Error("React.Children.only expected to receive a single React element child.");
             }
             return children;
@@ -1157,7 +1157,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useLayoutEffect(create, deps);
           }
-          function useCallback2(callback, deps) {
+          function useCallback(callback, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useCallback(callback, deps);
           }
@@ -1559,11 +1559,11 @@
             if (isArray(node)) {
               for (var i = 0; i < node.length; i++) {
                 var child = node[i];
-                if (isValidElement3(child)) {
+                if (isValidElement2(child)) {
                   validateExplicitKey(child, parentType);
                 }
               }
-            } else if (isValidElement3(node)) {
+            } else if (isValidElement2(node)) {
               if (node._store) {
                 node._store.validated = true;
               }
@@ -1574,7 +1574,7 @@
                   var iterator = iteratorFn.call(node);
                   var step;
                   while (!(step = iterator.next()).done) {
-                    if (isValidElement3(step.value)) {
+                    if (isValidElement2(step.value)) {
                       validateExplicitKey(step.value, parentType);
                     }
                   }
@@ -1697,7 +1697,7 @@
             return validatedFactory;
           }
           function cloneElementWithValidation(element, props, children) {
-            var newElement = cloneElement2.apply(this, arguments);
+            var newElement = cloneElement.apply(this, arguments);
             for (var i = 2; i < arguments.length; i++) {
               validateChildKeys(arguments[i], newElement.type);
             }
@@ -1918,12 +1918,12 @@
           exports.createFactory = createFactory;
           exports.createRef = createRef;
           exports.forwardRef = forwardRef;
-          exports.isValidElement = isValidElement3;
+          exports.isValidElement = isValidElement2;
           exports.lazy = lazy;
           exports.memo = memo2;
           exports.startTransition = startTransition;
           exports.unstable_act = act;
-          exports.useCallback = useCallback2;
+          exports.useCallback = useCallback;
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
@@ -18194,7 +18194,7 @@
           {
             propTypesMisspellWarningShown = false;
           }
-          function isValidElement3(object) {
+          function isValidElement2(object) {
             {
               return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
             }
@@ -18261,11 +18261,11 @@
               if (isArray(node)) {
                 for (var i = 0; i < node.length; i++) {
                   var child = node[i];
-                  if (isValidElement3(child)) {
+                  if (isValidElement2(child)) {
                     validateExplicitKey(child, parentType);
                   }
                 }
-              } else if (isValidElement3(node)) {
+              } else if (isValidElement2(node)) {
                 if (node._store) {
                   node._store.validated = true;
                 }
@@ -18276,7 +18276,7 @@
                     var iterator = iteratorFn.call(node);
                     var step;
                     while (!(step = iterator.next()).done) {
-                      if (isValidElement3(step.value)) {
+                      if (isValidElement2(step.value)) {
                         validateExplicitKey(step.value, parentType);
                       }
                     }
@@ -19605,11 +19605,6 @@ ${errorInfo.componentStack}`);
     }, [api.buyerJourney]);
   }
 
-  // extensions/shopy-discount-component/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/storage.mjs
-  function useStorage() {
-    return useApi().storage;
-  }
-
   // extensions/shopy-discount-component/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-identity.mjs
   function useCustomer() {
     const buyerIdentity = useApi().buyerIdentity;
@@ -19617,29 +19612,6 @@ ${errorInfo.componentStack}`);
       throw new ScopeNotGrantedError("Using buyer identity requires having personal customer data permissions granted to your app.");
     }
     return useSubscription(buyerIdentity.customer);
-  }
-
-  // extensions/shopy-discount-component/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/translate.mjs
-  var import_react24 = __toESM(require_react(), 1);
-  function useTranslate() {
-    const {
-      i18n
-    } = useApi();
-    const translate = (0, import_react24.useCallback)((...args) => {
-      const translation = i18n.translate(...args);
-      if (!Array.isArray(translation)) {
-        return translation;
-      }
-      return translation.map((part, index) => {
-        if (/* @__PURE__ */ (0, import_react24.isValidElement)(part)) {
-          return /* @__PURE__ */ (0, import_react24.cloneElement)(part, {
-            key: index
-          });
-        }
-        return part;
-      });
-    }, [i18n]);
-    return translate;
   }
 
   // extensions/shopy-discount-component/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/discounts.mjs
@@ -19658,7 +19630,7 @@ ${errorInfo.componentStack}`);
   }
 
   // extensions/shopy-discount-component/src/Checkout.tsx
-  var import_react25 = __toESM(require_react());
+  var import_react24 = __toESM(require_react());
 
   // extensions/shopy-discount-component/src/actions.ts
   var host = "https://shopy-api.wafer.ee/sf/v2";
@@ -19747,12 +19719,6 @@ ${errorInfo.componentStack}`);
     }));
   });
 
-  // extensions/shopy-discount-component/src/utlis.ts
-  var formatMoney = (amount) => {
-    const amt = amount > 0 ? amount : 0;
-    return "$" + (amt / 100).toFixed(2);
-  };
-
   // extensions/shopy-discount-component/src/Checkout.tsx
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
   var Checkout_default = reactExtension(
@@ -19760,24 +19726,20 @@ ${errorInfo.componentStack}`);
     () => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Extension, {})
   );
   function Extension() {
-    const translate = useTranslate();
     const api = useApi();
-    const [applyloading, setapplyloading] = (0, import_react25.useState)(false);
-    const [removeloading, setRemoveloading] = (0, import_react25.useState)(false);
-    const [applyed, setApplyed] = (0, import_react25.useState)(false);
-    const [code, setCode] = (0, import_react25.useState)(null);
-    const [appliedcode, setAppliedCode] = (0, import_react25.useState)(null);
-    const [applyedPromo, setAppliedPromo] = (0, import_react25.useState)([]);
+    const [applyloading, setapplyloading] = (0, import_react24.useState)(false);
+    const [removeloading, setRemoveloading] = (0, import_react24.useState)(false);
+    const [applyed, setApplyed] = (0, import_react24.useState)(false);
+    const [code, setCode] = (0, import_react24.useState)(null);
+    const [appliedcode, setAppliedCode] = (0, import_react24.useState)(null);
     const checkoutToken = api.checkoutToken.current;
     const token = checkoutToken;
     const Cost = api.cost.totalAmount.current.amount;
     const customer = useCustomer();
     const useDiscountcodes = useDiscountCodes();
-    const localStorage = useStorage();
     const applyDiscountCodeChange = useApplyDiscountCodeChange();
     const customerId = customer.id.replace("gid://shopify/Customer/", "");
     const applyDiscount = () => __async(this, null, function* () {
-      var _a;
       setapplyloading(true);
       setAppliedCode(code);
       yield applyPromotion(code, token, customer);
@@ -19791,7 +19753,6 @@ ${errorInfo.componentStack}`);
           type: "addDiscountCode",
           code: discountData.data.code
         });
-        setAppliedPromo((_a = shopyCheckoutData == null ? void 0 : shopyCheckoutData.data[0]) == null ? void 0 : _a.promotionApplications);
         api.ui.overlay.close("apply-discount");
         setapplyloading(false);
         setApplyed(true);
@@ -19802,7 +19763,6 @@ ${errorInfo.componentStack}`);
       }
     });
     const RemoveDiscount = () => __async(this, null, function* () {
-      var _a;
       setRemoveloading(true);
       yield RemovePromotion(code, token, customer);
       const status = yield pullCheckout(token, customerId);
@@ -19820,7 +19780,6 @@ ${errorInfo.componentStack}`);
           "addDiscountCode",
           discountData.data.code
         );
-        setAppliedPromo((_a = shopyCheckoutData == null ? void 0 : shopyCheckoutData.data[0]) == null ? void 0 : _a.promotionApplications);
         api.ui.overlay.close("remove-discount");
         setRemoveloading(false);
         setApplyed(false);
@@ -19831,17 +19790,6 @@ ${errorInfo.componentStack}`);
         api.ui.overlay.close("remove-discount");
       }
     });
-    const update = () => __async(this, null, function* () {
-      var _a;
-      const shopyCheckout = yield getShopyCheckout(token, customerId);
-      const shopyCheckoutData = JSON.parse(shopyCheckout);
-      setAppliedPromo((_a = shopyCheckoutData == null ? void 0 : shopyCheckoutData.data[0]) == null ? void 0 : _a.promotionApplications);
-    });
-    const deliveryInstructions = localStorage.read("discountdata").then((data) => data);
-    console.log("deliveryInstructions", deliveryInstructions);
-    (0, import_react25.useEffect)(() => {
-      update();
-    }, []);
     const retryAppliDiscount = (type, code2, attempt) => __async(this, null, function* () {
       const currentAttempt = attempt || 1;
       const updated = yield applyDiscountCodeChange({
@@ -19946,17 +19894,6 @@ ${errorInfo.componentStack}`);
         ] }) : "",
         applyloading || removeloading ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Banner2, { title: `Please Wait, We Are  ${applyloading ? "Applying" : ""} ${removeloading ? "Removing" : ""} M&H Discount Code`, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { size: "large" }) }) }) : ""
       ] }),
-      "testt",
-      (applyedPromo == null ? void 0 : applyedPromo.length) > 0 ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { padding: "tight", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "extraLarge", children: " Applied M&H Discounts" }),
-          " "
-        ] }),
-        applyedPromo == null ? void 0 : applyedPromo.map((obj) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineLayout2, { columns: ["fill", "20%"], children: [
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { padding: "tight", children: obj.promotion.type }),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { padding: "tight", inlineAlignment: "end", children: formatMoney(obj.value) })
-        ] }))
-      ] }) }) : "",
       /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { padding: "tight", children: [
         /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "small", children: "  " }),
         " "
@@ -19964,4 +19901,3 @@ ${errorInfo.componentStack}`);
     ] }) });
   }
 })();
-//# sourceMappingURL=shopy-discount-component.js.map
